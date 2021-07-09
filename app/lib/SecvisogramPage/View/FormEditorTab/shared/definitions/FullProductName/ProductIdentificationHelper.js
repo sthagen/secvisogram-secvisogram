@@ -34,8 +34,8 @@ export default function ProductIdentificationHelper({
             {...productIdentificationHelperProps('cpe')}
             label="Common Platform Enumeration representation"
             description="The Common Platform Enumeration (CPE) attribute refers to a method for naming platforms external to this specification."
-            pattern="^cpe:(/|\\d+\\.\\d+)[^:]*:?[^:]*:?[^:]*:?[^:]*:?[^:]*:?[^:]*:?[^:]*$"
-            placeholder="^cpe:(/|\\d+\\.\\d+)[^:]*:?[^:]*:?[^:]*:?[^:]*:?[^:]*:?[^:]*:?[^:]*$"
+            pattern="^(cpe:2\.3:[aho\*\-](:(((\?*|\*?)([a-zA-Z0-9\-\._]|(\\[\\\*\?!\x22#\$%&'\(\)\+,/:;<=>@\[\]\^`\{\|\}~]))+(\?*|\*?))|[\*\-])){5}(:(([a-zA-Z]{2,3}(-([a-zA-Z]{2}|[0-9]{3}))?)|[\*\-]))(:(((\?*|\*?)([a-zA-Z0-9\-\._]|(\\[\\\*\?!\x22#\$%&'\(\)\+,/:;<=>@\[\]\^`\{\|\}~]))+(\?*|\*?))|[\*\-])){4})|([c][pP][eE]:/[AHOaho]?(:[A-Za-z0-9\._\-~%]*){0,6})$"
+            placeholder="^(cpe:2\.3:[aho\*\-](:(((\?*|\*?)([a-zA-Z0-9\-\._]|(\\[\\\*\?!\x22#\$%&'\(\)\+,/:;<=>@\[\]\^`\{\|\}~]))+(\?*|\*?))|[\*\-])){5}(:(([a-zA-Z]{2,3}(-([a-zA-Z]{2}|[0-9]{3}))?)|[\*\-]))(:(((\?*|\*?)([a-zA-Z0-9\-\._]|(\\[\\\*\?!\x22#\$%&'\(\)\+,/:;<=>@\[\]\^`\{\|\}~]))+(\?*|\*?))|[\*\-])){4})|([c][pP][eE]:/[AHOaho]?(:[A-Za-z0-9\._\-~%]*){0,6})$"
             minLength={5}
             deletable
           />
@@ -114,6 +114,21 @@ export default function ProductIdentificationHelper({
             deletable
           />
           <ArrayContainer
+            {...productIdentificationHelperProps('sbom_urls')}
+            label="List of SBOM URLs"
+            description="Contains a list of URLs where SBOMs for this product can be retrieved."
+            defaultItemValue={() => ''}
+          >
+            {(sbomUrlsItemProps) => (
+              <TextAttribute
+                {...sbomUrlsItemProps}
+                label="SBOM URL"
+                description="Contains a URL of one SBOM for this product."
+                deletable
+              />
+            )}
+          </ArrayContainer>
+          <ArrayContainer
             {...productIdentificationHelperProps('serial_numbers')}
             label="List of serial numbers"
             description="Contains a list of parts, or full serial numbers."
@@ -124,6 +139,21 @@ export default function ProductIdentificationHelper({
                 {...serialNumbersItemProps}
                 label="Serial number"
                 description="Contains a part, or a full serial number of the component to identify."
+                deletable
+              />
+            )}
+          </ArrayContainer>
+          <ArrayContainer
+            {...productIdentificationHelperProps('skus')}
+            label="List of stock keeping units"
+            description="Contains a list of parts, or full stock keeping units."
+            defaultItemValue={() => ''}
+          >
+            {(skusItemProps) => (
+              <TextAttribute
+                {...skusItemProps}
+                label="Stock keeping unit"
+                description="Contains a part, or a full stock keeping unit (SKU) which is used in the ordering process to identify the component."
                 deletable
               />
             )}

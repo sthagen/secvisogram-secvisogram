@@ -17,7 +17,7 @@
     </tr>
     <tr>
       <td>Initial release date: {{document.tracking.initial_release_date}}</td>
-      <td>Engine: {{document.tracking.generator.engine}}</td>
+      <td>Engine: {{#document.tracking.generator.engine}}{{name}}{{#version}} {{.}}{{/version}}{{/document.tracking.generator.engine}}</td>
     </tr>
     <tr>
       <td>Current release date: {{document.tracking.current_release_date}}</td>
@@ -29,7 +29,7 @@
     </tr>
     <tr>
       <td>CVSSv3.1 Base Score: {{document.max_base_score}}</td>
-      <td>Serverity:
+      <td>Severity:
         {{#document.aggregate_severity.namespace}} <a href={{document.aggregate_severity.namespace}}>{{document.aggregate_severity.text}}</a>{{/document.aggregate_severity.namespace}}
         {{^document.aggregate_severity.namespace}} {{document.aggregate_severity.text}}{{/document.aggregate_severity.namespace}}
       </td>
@@ -243,7 +243,7 @@
       <ul>
       {{#involvements}}
         {{#.}}
-        <li>{{#upperCase}}{{party}}{{/upperCase}}{{#status}} ({{#replaceUnderscores}}{{.}}{{/replaceUnderscores}}){{/status}}{{#summary}}: {{.}}{{/summary}}</li>
+        <li>{{#date}}{{.}} {{/date}}{{#upperCase}}{{party}}{{/upperCase}}{{#status}} ({{#replaceUnderscores}}{{.}}{{/replaceUnderscores}}){{/status}}{{#summary}}: {{.}}{{/summary}}</li>
         {{/.}}
       {{/involvements}}
       </ul>
@@ -300,6 +300,7 @@
 
   {{#document.publisher}}
     <h2>{{name}}</h2>
+    <p>Namespace: {{namespace}}</p>
     <p>{{contact_details}}</p>
     <p>{{issuing_authority}}</p>
   {{/document.publisher}}
