@@ -66,6 +66,7 @@ const props = {
     },
   },
   activeTab: /** @type {'EDITOR'} */ ('EDITOR'),
+  generatorEngineData: { name: 'Secvisogram', version: 'unidentified version' },
   onSetStrict: console.log.bind(console, 'onSetStrict'),
   onNew: console.log.bind(console, 'onNew'),
   onDownload: console.log.bind(console, 'onDownload'),
@@ -249,6 +250,27 @@ export const tests = [
             document: {
               ...props.data.doc.document,
               acknowledgments: /** @type {any} */ ([null]),
+            },
+          },
+        }}
+      />
+    ),
+  },
+  {
+    title: 'Editor with an invalid current_release_date value',
+    render: () => (
+      <View
+        {...props}
+        data={{
+          ...props.data,
+          doc: {
+            ...props.data.doc,
+            document: {
+              ...props.data.doc.document,
+              tracking: {
+                ...props.data.doc.document.tracking,
+                current_release_date: '2020-01-01T',
+              },
             },
           },
         }}
