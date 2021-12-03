@@ -947,6 +947,28 @@ export default {
       },
     },
 
+    {
+      valid: true,
+      content: {
+        ...MINIMAL_DOC,
+        document: {
+          ...MINIMAL_DOC.document,
+          tracking: {
+            ...MINIMAL_DOC.document.tracking,
+            revision_history: [
+              {
+                number: '1.0.0',
+                date: '2021-01-14T00:00:00.000Z',
+                summary: 'Initial version',
+              },
+            ],
+            status: 'draft',
+            version: '1.0.0-alpha+123',
+          },
+        },
+      },
+    },
+
     // Fails "6.1.7 Multiple Scores with same Version per Product"
     {
       valid: false,
@@ -1391,6 +1413,31 @@ export default {
                 date: '2021-04-23T10:00:00.000Z',
                 party: 'vendor',
                 status: 'in_progress',
+              },
+              {
+                date: '2021-04-23T10:00:00.000Z',
+                party: 'vendor',
+                status: 'in_progress',
+                summary:
+                  'The vendor has released a mitigation and is working to fully resolve the issue.',
+              },
+            ],
+          },
+        ],
+      },
+    },
+
+    {
+      valid: false,
+      content: {
+        ...MINIMAL_DOC,
+        vulnerabilities: [
+          {
+            involvements: [
+              {
+                date: '2021-04-23T10:00:00.000Z',
+                party: 'vendor',
+                status: 'completed',
               },
               {
                 date: '2021-04-23T10:00:00.000Z',
