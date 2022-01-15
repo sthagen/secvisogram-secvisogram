@@ -15,6 +15,15 @@ suite('bcpLanguageTagChecker', function () {
     'qaa',
     'qaa-Qaaa',
     'qaa-Qaaa-QM',
+    'az-baku1926',
+    'ba-baku1926',
+    'de-CH-1996',
+    'pt-BR-abl1943',
+    'ja-Latn-hepburn-heploc',
+    'sl-rozaj-1994',
+    'sl-rozaj-solba-1994',
+    'sl-rozaj-biske-1994',
+    'zh-gan',
   ]
 
   correctLanguageTags.forEach((correctLanguageTag) => {
@@ -31,6 +40,7 @@ suite('bcpLanguageTagChecker', function () {
     'de-DE-1901-1901',
     'abx-u-mingo-u-mingo',
     'abx-i-mingo',
+    'zh-gan-gan',
   ]
 
   incorrectLanguageTags.forEach((incorrectLanguageTag) => {
