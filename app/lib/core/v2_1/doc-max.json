@@ -3,14 +3,10 @@
   "document": {
     "acknowledgments": [
       {
-        "names": [
-          ""
-        ],
+        "names": [""],
         "organization": "",
         "summary": "",
-        "urls": [
-          ""
-        ]
+        "urls": [""]
       }
     ],
     "aggregate_severity": {
@@ -56,9 +52,7 @@
     "source_lang": "",
     "title": "",
     "tracking": {
-      "aliases": [
-        ""
-      ],
+      "aliases": [""],
       "current_release_date": "",
       "generator": {
         "date": "",
@@ -103,19 +97,11 @@
                 "filename": ""
               }
             ],
-            "model_numbers": [
-              ""
-            ],
+            "model_numbers": [""],
             "purl": "",
-            "sbom_urls": [
-              ""
-            ],
-            "serial_numbers": [
-              ""
-            ],
-            "skus": [
-              ""
-            ],
+            "sbom_urls": [""],
+            "serial_numbers": [""],
+            "skus": [""],
             "x_generic_uris": [
               {
                 "namespace": "",
@@ -143,19 +129,11 @@
               "filename": ""
             }
           ],
-          "model_numbers": [
-            ""
-          ],
+          "model_numbers": [""],
           "purl": "",
-          "sbom_urls": [
-            ""
-          ],
-          "serial_numbers": [
-            ""
-          ],
-          "skus": [
-            ""
-          ],
+          "sbom_urls": [""],
+          "serial_numbers": [""],
+          "skus": [""],
           "x_generic_uris": [
             {
               "namespace": "",
@@ -168,10 +146,7 @@
     "product_groups": [
       {
         "group_id": "",
-        "product_ids": [
-          "",
-          ""
-        ],
+        "product_ids": ["", ""],
         "summary": ""
       }
     ],
@@ -194,19 +169,11 @@
                 "filename": ""
               }
             ],
-            "model_numbers": [
-              ""
-            ],
+            "model_numbers": [""],
             "purl": "",
-            "sbom_urls": [
-              ""
-            ],
-            "serial_numbers": [
-              ""
-            ],
-            "skus": [
-              ""
-            ],
+            "sbom_urls": [""],
+            "serial_numbers": [""],
+            "skus": [""],
             "x_generic_uris": [
               {
                 "namespace": "",
@@ -224,14 +191,10 @@
     {
       "acknowledgments": [
         {
-          "names": [
-            ""
-          ],
+          "names": [""],
           "organization": "",
           "summary": "",
-          "urls": [
-            ""
-          ]
+          "urls": [""]
         }
       ],
       "cve": "",
@@ -246,13 +209,9 @@
       "flags": [
         {
           "date": "",
-          "group_ids": [
-            ""
-          ],
+          "group_ids": [""],
           "label": "",
-          "product_ids": [
-            ""
-          ]
+          "product_ids": [""]
         }
       ],
       "ids": [
@@ -278,30 +237,14 @@
         }
       ],
       "product_status": {
-        "first_affected": [
-          ""
-        ],
-        "first_fixed": [
-          ""
-        ],
-        "fixed": [
-          ""
-        ],
-        "known_affected": [
-          ""
-        ],
-        "known_not_affected": [
-          ""
-        ],
-        "last_affected": [
-          ""
-        ],
-        "recommended": [
-          ""
-        ],
-        "under_investigation": [
-          ""
-        ]
+        "first_affected": [""],
+        "first_fixed": [""],
+        "fixed": [""],
+        "known_affected": [""],
+        "known_not_affected": [""],
+        "last_affected": [""],
+        "recommended": [""],
+        "under_investigation": [""]
       },
       "references": [
         {
@@ -316,15 +259,9 @@
           "category": "",
           "date": "",
           "details": "",
-          "entitlements": [
-            ""
-          ],
-          "group_ids": [
-            ""
-          ],
-          "product_ids": [
-            ""
-          ],
+          "entitlements": [""],
+          "group_ids": [""],
+          "product_ids": [""],
           "restart_required": {
             "category": "",
             "details": ""
@@ -432,9 +369,7 @@
                 {
                   "name": "",
                   "namespace": "",
-                  "values": [
-                    ""
-                  ],
+                  "values": [""],
                   "version": ""
                 }
               ],
@@ -442,9 +377,7 @@
             }
           },
           "source": "",
-          "products": [
-            ""
-          ]
+          "products": [""]
         }
       ],
       "threats": [
@@ -452,12 +385,8 @@
           "category": "",
           "date": "",
           "details": "",
-          "group_ids": [
-            ""
-          ],
-          "product_ids": [
-            ""
-          ]
+          "group_ids": [""],
+          "product_ids": [""]
         }
       ],
       "title": ""

@@ -3,6 +3,7 @@ import React from 'react'
 import createFileName from '../../../shared/createFileName.js'
 import * as api from '../../shared/api.js'
 import AppErrorContext from '../../shared/context/AppErrorContext.js'
+import { parseMarkdown } from './PreviewTab/markdownParser.js'
 import HTMLTemplate2_0 from './shared/HTMLTemplate2_0.js'
 import HTMLTemplate2_1 from './shared/HTMLTemplate2_1.js'
 
@@ -37,23 +38,23 @@ export default /**
     advisoryState?.type === 'NEW_ADVISORY'
       ? t('exportModal.unsavedFileExportOnlyLocal')
       : formValues !== originalValues
-      ? t('exportModal.unsavedChangesSelectExportLocation')
-      : ''
+        ? t('exportModal.unsavedChangesSelectExportLocation')
+        : ''
   const isSelectorVisible =
     advisoryState?.type === 'ADVISORY' && formValues !== originalValues
 
   const [source, setSource] = React.useState(
     /** @type {'CSAFJSON'
-     | 'CSAFJSONSTRIPPED'
-     | 'HTMLDOCUMENT'
-     | 'PDFDOCUMENT'
-     | 'MARKDOWN'} */
-    (defaultSource)
+    | 'CSAFJSONSTRIPPED'
+    | 'HTMLDOCUMENT'
+    | 'PDFDOCUMENT'
+    | 'MARKDOWN'} */
+    (defaultSource),
   )
   const [isLocal, setIsLocal] = React.useState(
     advisoryState?.type === 'NEW_ADVISORY'
       ? true
-      : formValues !== originalValues
+      : formValues !== originalValues,
   )
 
   const exportButtonProps = {
@@ -282,10 +283,13 @@ export default /**
                   case 'HTMLDOCUMENT':
                     onPrepareDocumentForTemplate(formValues.doc)
                       .then(({ document: doc }) => {
+                        const markdownParsedDoc = parseMarkdown(doc)
                         const html =
                           uiSchemaVersion === 'v2.1'
                             ? HTMLTemplate2_1({ document: doc })
-                            : HTMLTemplate2_0({ document: doc })
+                            : HTMLTemplate2_0({
+                                document: markdownParsedDoc,
+                              })
                         onExportHTML(html, formValues.doc)
                       })
                       .catch(handleError)
@@ -299,10 +303,13 @@ export default /**
                         ) {
                           return
                         }
+                        const markdownParsedDoc = parseMarkdown(doc)
                         const html =
                           uiSchemaVersion === 'v2.1'
                             ? HTMLTemplate2_1({ document: doc })
-                            : HTMLTemplate2_0({ document: doc })
+                            : HTMLTemplate2_0({
+                                document: markdownParsedDoc,
+                              })
                         const iframeWindow = iframeRef.current.contentWindow
                         iframeRef.current.contentDocument.open()
                         iframeRef.current.contentDocument.write(html)
@@ -343,10 +350,10 @@ export default /**
                   source === 'CSAFJSON'
                     ? 'JSON'
                     : source === 'HTMLDOCUMENT'
-                    ? 'HTML'
-                    : source === 'MARKDOWN'
-                    ? 'Markdown'
-                    : 'PDF'
+                      ? 'HTML'
+                      : source === 'MARKDOWN'
+                        ? 'Markdown'
+                        : 'PDF',
                 )}
                 download={createFileName(
                   advisoryState.advisory.csaf,
@@ -354,10 +361,10 @@ export default /**
                   source === 'CSAFJSON'
                     ? 'json'
                     : source === 'HTMLDOCUMENT'
-                    ? 'html'
-                    : source === 'MARKDOWN'
-                    ? 'md'
-                    : 'pdf'
+                      ? 'html'
+                      : source === 'MARKDOWN'
+                        ? 'md'
+                        : 'pdf',
                 )}
                 onClick={() => {
                   ref.current?.close()

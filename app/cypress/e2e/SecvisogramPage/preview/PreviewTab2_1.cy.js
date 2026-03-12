@@ -5,7 +5,7 @@ import { testDocuments } from '../../../fixtures/vulnerabilityFlagsTests.js'
 
 const testDocument = (
   /** @type {any} */ document,
-  /** @type {RegExp[]} */ expectedOutputs
+  /** @type {RegExp[]} */ expectedOutputs,
 ) => {
   const preview = new DocumentEntityCsaf21().preview({ document })
   const html = HTMLTemplate2_1(preview)

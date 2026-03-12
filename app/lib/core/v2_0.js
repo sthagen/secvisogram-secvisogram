@@ -1,12 +1,17 @@
+import sortObjectKeys from '#lib/app/shared/sortObjectKeys.js'
 import { compose, set } from 'lodash/fp.js'
 import * as basic from '../../../csaf-validator-lib/basic.js'
+import * as optionalTests from '../../../csaf-validator-lib/lib/optionalTests.js'
 import libStrip from '../../../csaf-validator-lib/strip.js'
 import libValidate from '../../../csaf-validator-lib/validate.js'
 import doc_max from './v2_0/doc-max.json'
 import doc_min from './v2_0/doc-min.json'
 import { DocumentEntity } from './v2_0/entities.js'
 
-const INSTANT_TESTS = Object.values(basic)
+const INSTANT_TESTS =
+  /** @type {import('../../../csaf-validator-lib/lib/shared/types.js').DocumentTest[]} */ (
+    Object.values(basic)
+  ).concat(Object.values(optionalTests))
 
 const secvisogramName = 'Secvisogram'
 
@@ -21,9 +26,10 @@ const secvisogramVersion =
 
 const setGeneratorFields = (/** @type {Date} */ date) =>
   compose(
+    (d) => sortObjectKeys(new Intl.Collator(), d),
     set('document.tracking.generator.engine.name', secvisogramName),
     set('document.tracking.generator.engine.version', secvisogramVersion),
-    set('document.tracking.generator.date', date.toISOString())
+    set('document.tracking.generator.date', date.toISOString()),
   )
 
 /**
@@ -46,9 +52,24 @@ export async function validate({ document }) {
     isValid: res.isValid,
     /** @type {TypedValidationError[]} */
     errors: res.tests.flatMap((t) =>
-      t.errors.map(
-        (e) => /** @type {TypedValidationError} */ ({ type: 'error', ...e })
-      )
+      t.errors
+        .map(
+          (e) => /** @type {TypedValidationError} */ ({ type: 'error', ...e }),
+        )
+        .concat(
+          t.warnings.map(
+            (e) =>
+              /** @type {TypedValidationError} */ ({
+                type: 'warning',
+                ...e,
+              }),
+          ),
+        )
+        .concat(
+          t.infos.map(
+            (e) => /** @type {TypedValidationError} */ ({ type: 'info', ...e }),
+          ),
+        ),
     ),
   }
 }

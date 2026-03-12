@@ -33,7 +33,7 @@ export interface Props {
       params: {
         advisoryId: string
       },
-      callback: () => void
+      callback: () => void,
     ): void
   }>
   generatorEngineData: {
@@ -52,7 +52,7 @@ export interface Props {
   onOpen(file: File): Promise<void | {}>
   onChangeTab(
     tab: 'EDITOR' | 'SOURCE' | 'PREVIEW' | 'CSAF-JSON' | 'DOCUMENTS',
-    document: {}
+    document: {},
   ): void
   onValidate(document: {}): void
   onServiceValidate(params: { validatorUrl: string; csaf: {} }): Promise<{

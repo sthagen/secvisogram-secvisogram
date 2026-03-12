@@ -27,7 +27,7 @@ function getChildPathAndValue(instancePath, doc, childKey) {
 
 const getChildProps = (
   /** @type import('../../../../shared/types').Property */ property,
-  /** @type string */ childKey
+  /** @type string */ childKey,
 ) => property.metaInfo.propertyList?.find((p) => p.key === childKey)
 
 /**
@@ -50,7 +50,7 @@ export default function CweAttribute({ property, instancePath, disabled }) {
   const [versionPath, versionValue] = getChildPathAndValue(
     instancePath,
     doc,
-    'version'
+    'version',
   )
   const [namePath, nameValue] = getChildPathAndValue(instancePath, doc, 'name')
 
@@ -60,7 +60,7 @@ export default function CweAttribute({ property, instancePath, disabled }) {
 
   const cweVersion = useMemo(
     () => versionTerm || Array.from(cwecMap.keys().take(1)).at(0),
-    [versionTerm]
+    [versionTerm],
   )
 
   useEffect(() => {
@@ -148,7 +148,7 @@ function useCwecMatch(term, cwec) {
         : matchSorter(cwec ?? [], throttledTerm, {
             keys: [(item) => `${item.id}, ${item.name}`],
           }),
-    [throttledTerm, cwec]
+    [throttledTerm, cwec],
   )
 }
 
@@ -173,7 +173,7 @@ function CwecVersion({
   disabled,
 }) {
   const [inputValue, setInputValue] = React.useState(
-    /** @type string */ (value)
+    /** @type string */ (value),
   )
   const [term, setTerm] = React.useState(/** @type string */ (value))
   const results = useCwecVersionMatch(term)
@@ -260,7 +260,7 @@ function useCwecVersionMatch(term) {
         : matchSorter(Array.from(cwecMap.keys()), throttledTerm, {
             keys: [(item) => item],
           }),
-    [throttledTerm]
+    [throttledTerm],
   )
 }
 
@@ -287,7 +287,7 @@ function CwecId({
   cwec,
 }) {
   const [inputValue, setInputValue] = React.useState(
-    /** @type string */ (value)
+    /** @type string */ (value),
   )
   const [term, setTerm] = React.useState(/** @type string */ (value))
   const results = useCwecMatch(term, cwec)
@@ -388,7 +388,7 @@ function CwecName({
   disabled,
 }) {
   const [inputValue, setInputValue] = React.useState(
-    /** @type string */ (value)
+    /** @type string */ (value),
   )
   const [term, setTerm] = React.useState(/** @type string */ (value))
   const results = useCwecMatch(term, cwec)

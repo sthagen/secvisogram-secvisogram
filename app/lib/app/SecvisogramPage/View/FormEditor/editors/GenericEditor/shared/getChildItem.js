@@ -37,10 +37,10 @@ export default function useChildItem() {
     return childType === 'OBJECT'
       ? getPrefilledObject(property)
       : childType === 'ARRAY'
-      ? []
-      : childType === 'STRING'
-      ? ''
-      : null
+        ? []
+        : childType === 'STRING'
+          ? ''
+          : null
   }
 
   return { getChildItem }

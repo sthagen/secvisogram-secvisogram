@@ -34,27 +34,27 @@ describe('SecvisogramPage', () => {
           it(`user: ${user.preferredUsername}, advisoryId: ${advisoryId}, tab: ${tab}`, function () {
             cy.intercept(
               '/.well-known/appspecific/de.bsi.secvisogram.json',
-              getLoginEnabledConfig()
+              getLoginEnabledConfig(),
             ).as('wellKnownAppConfig')
             cy.intercept(
               getLoginEnabledConfig().userInfoUrl,
-              getUserInfo(user)
+              getUserInfo(user),
             ).as('apiGetUserInfo')
             cy.intercept('/api/v1/advisories', getGetAdvisoriesResponse()).as(
-              'apiGetAdvisories'
+              'apiGetAdvisories',
             )
             const advisoryDetail = getGetAdvisoryDetailResponse({
               advisoryId,
             })
             cy.intercept(
               `/api/v1/advisories/${advisory.advisoryId}`,
-              advisoryDetail
+              advisoryDetail,
             ).as('apiGetAdvisoryDetail')
             const validationResponse = getValidationResponse({
               document: advisoryDetail.csaf,
             })
             cy.intercept('POST', '/api/v1/validate', validationResponse).as(
-              'apiValidate'
+              'apiValidate',
             )
 
             cy.visit('?tab=DOCUMENTS')
@@ -63,7 +63,7 @@ describe('SecvisogramPage', () => {
             cy.wait('@apiGetAdvisories')
 
             cy.get(
-              `[data-testid="advisory-${advisory.advisoryId}-list_entry-open_button"]`
+              `[data-testid="advisory-${advisory.advisoryId}-list_entry-open_button"]`,
             ).click()
             cy.wait('@apiGetAdvisoryDetail')
             cy.get('[data-testid="loading_indicator"]').should('not.exist')
@@ -88,9 +88,9 @@ describe('SecvisogramPage', () => {
               'have.text',
               String(
                 validationResponse.tests.flatMap((t) =>
-                  t.errors.concat(t.warnings).concat(t.infos)
-                ).length
-              )
+                  t.errors.concat(t.warnings).concat(t.infos),
+                ).length,
+              ),
             )
           })
         }
@@ -107,13 +107,14 @@ describe('SecvisogramPage', () => {
 
       cy.visit('?tab=EDITOR')
       cy.wait('@wellKnownAppConfig')
+      cy.get('#csafVersionSelect').select('v2.0')
 
       cy.get('[data-testid="new_document_button"]').click()
 
       cy.get(`[data-testid="new_document-file_selector_button"]`).click()
       cy.get(`[data-testid="new_document-file_input"]`).selectFile({
         contents: /** @type {any} */ (Cypress.Buffer).from(
-          JSON.stringify(sampleUploadDocument)
+          JSON.stringify(sampleUploadDocument),
         ),
         fileName: 'some_file.json',
         mimeType: 'application/json',
@@ -125,8 +126,10 @@ describe('SecvisogramPage', () => {
       cy.get(`[data-testid="menu_entry-/document"]`).click()
       cy.get('[data-testid="attribute-document-title"] input').should(
         'have.value',
-        sampleUploadDocument.document.title
+        sampleUploadDocument.document.title,
       )
+      cy.get('[data-testid="sideBar-ERRORS-button"]').click()
+      cy.get('[data-testid*=error_card-]').should('have.length', 7)
     })
 
     it(`in source editor`, function () {
@@ -143,7 +146,7 @@ describe('SecvisogramPage', () => {
       cy.get(`[data-testid="new_document-file_selector_button"]`).click()
       cy.get(`[data-testid="new_document-file_input"]`).selectFile({
         contents: /** @type {any} */ (Cypress.Buffer).from(
-          JSON.stringify(sampleUploadDocument)
+          JSON.stringify(sampleUploadDocument),
         ),
         fileName: 'some_file.json',
         mimeType: 'application/json',
@@ -176,7 +179,7 @@ describe('SecvisogramPage', () => {
         cy.get('[data-testid="new_document_button"]').click()
 
         cy.get(`select[data-testid="new_document-templates-select"]`).select(
-          template.templateId
+          template.templateId,
         )
 
         cy.get(`[data-testid="new_document-create_document_button"]`).click()
@@ -197,14 +200,14 @@ describe('SecvisogramPage', () => {
               tracking: {
                 ...Object.fromEntries(
                   Object.entries(doc.document.tracking || {}).filter(
-                    ([key]) => key !== 'generator'
-                  )
+                    ([key]) => key !== 'generator',
+                  ),
                 ),
               },
             },
           })
           expect(removeGeneratedPartsFromDocument(body)).deep.include(
-            removeGeneratedPartsFromDocument(template.templateContent)
+            removeGeneratedPartsFromDocument(template.templateContent),
           )
         })
       })
@@ -233,7 +236,7 @@ describe('SecvisogramPage', () => {
       cy.get(`[data-testid="menu_entry-/document"]`).click()
       cy.get('[data-testid="attribute-document-title"] input').should(
         'have.value',
-        sampleUploadDocument.document.title
+        sampleUploadDocument.document.title,
       )
     })
     it(`with error from a URL with CORS restrictions`, function () {
@@ -242,6 +245,7 @@ describe('SecvisogramPage', () => {
       }).as('testJson')
 
       cy.visit('?tab=EDITOR')
+      cy.get('#csafVersionSelect').select('v2.0')
 
       cy.get('[data-testid="new_document_button"]').click()
 
@@ -251,7 +255,7 @@ describe('SecvisogramPage', () => {
       cy.get(`[data-testid="new_document-create_document_button"]`).click()
       cy.wait('@testJson')
       cy.contains(
-        'Failed to load from URL. The server may be unreachable or the resource cannot be accessed due to CORS restrictions.'
+        'Failed to load from URL. The server may be unreachable or the resource cannot be accessed due to CORS restrictions.',
       )
     })
     it(`with error due to invalid JSON file`, function () {
@@ -261,6 +265,7 @@ describe('SecvisogramPage', () => {
       }).as('testJson')
 
       cy.visit('?tab=EDITOR')
+      cy.get('#csafVersionSelect').select('v2.0')
 
       cy.get('[data-testid="new_document_button"]').click()
 
@@ -281,15 +286,15 @@ describe('SecvisogramPage', () => {
 
           cy.intercept(
             '/.well-known/appspecific/de.bsi.secvisogram.json',
-            getLoginEnabledConfig()
+            getLoginEnabledConfig(),
           ).as('wellKnownAppConfig')
           cy.intercept(
             getLoginEnabledConfig().userInfoUrl,
-            getUserInfo(user)
+            getUserInfo(user),
           ).as('apiGetUserInfo')
           cy.intercept(
             '/api/v1/advisories/templates',
-            getGetTemplatesResponse()
+            getGetTemplatesResponse(),
           ).as('apiGetTemplates')
 
           cy.visit('?tab=EDITOR')
@@ -306,28 +311,28 @@ describe('SecvisogramPage', () => {
             if (mode === 'TEMPLATE') {
               for (const template of getTemplates()) {
                 cy.get(
-                  `select[data-testid="new_document-templates-select"] option[value="${template.templateId}"]`
+                  `select[data-testid="new_document-templates-select"] option[value="${template.templateId}"]`,
                 ).should('exist')
               }
               cy.get(
-                `select[data-testid="new_document-templates-select"]`
+                `select[data-testid="new_document-templates-select"]`,
               ).select(template.templateId)
 
               cy.intercept(
                 `/api/v1/advisories/templates/${template.templateId}`,
-                getGetTemplateContentResponse({ template })
+                getGetTemplateContentResponse({ template }),
               ).as('apiGetTemplateContent')
               cy.get(
-                `[data-testid="new_document-create_document_button"]`
+                `[data-testid="new_document-create_document_button"]`,
               ).click()
               cy.get('[data-testid="new_document_dialog"]').should('not.exist')
             } else {
               cy.get(
-                `[data-testid="new_document-file_selector_button"]`
+                `[data-testid="new_document-file_selector_button"]`,
               ).click()
               cy.get(`[data-testid="new_document-file_input"]`).selectFile({
                 contents: /** @type {any} */ (Cypress.Buffer).from(
-                  JSON.stringify(sampleUploadDocument)
+                  JSON.stringify(sampleUploadDocument),
                 ),
                 fileName: 'some_file.json',
                 mimeType: 'application/json',
@@ -335,13 +340,13 @@ describe('SecvisogramPage', () => {
               })
 
               cy.get(
-                `[data-testid="new_document-create_document_button"]`
+                `[data-testid="new_document-create_document_button"]`,
               ).click()
               cy.get('[data-testid="new_document_dialog"]').should('not.exist')
               cy.get(`[data-testid="menu_entry-/document"]`).click()
               cy.get('[data-testid="attribute-document-title"] input').should(
                 'have.value',
-                sampleUploadDocument.document.title
+                sampleUploadDocument.document.title,
               )
             }
 
@@ -350,30 +355,30 @@ describe('SecvisogramPage', () => {
             cy.intercept(
               'POST',
               '/api/v1/advisories',
-              createAdvisoryResponse
+              createAdvisoryResponse,
             ).as('apiCreateAdvisory')
             cy.intercept(
               'GET',
               `/api/v1/advisories/${createAdvisoryResponse.id}`,
               getGetAdvisoryDetailResponse({
                 advisoryId: createAdvisoryResponse.id,
-              })
+              }),
             ).as('apiGetAdvisoryDetail')
             cy.get('[data-testid="save_button"]').click()
 
             const summary = 'Summary'
             const legacyVersion = 'Legacy version'
             cy.get('[data-testid="submit_version-summary-textarea"]').type(
-              summary
+              summary,
             )
             cy.get('[data-testid="submit_version-legacy_version-input"]').type(
-              legacyVersion
+              legacyVersion,
             )
             cy.get('[data-testid="submit_version-submit"]').click()
             cy.wait('@apiCreateAdvisory').then((xhr) => {
               if (mode === 'TEMPLATE') {
                 expect(xhr.request.body.csaf).deep.equal(
-                  template.templateContent
+                  template.templateContent,
                 )
               } else {
                 expect(xhr.request.body.csaf).deep.equal(sampleUploadDocument)
@@ -401,14 +406,14 @@ describe('SecvisogramPage', () => {
           it(`user: ${user.preferredUsername}, advisoryId: ${advisory.advisoryId}, format: ${select}`, function () {
             cy.intercept(
               '/.well-known/appspecific/de.bsi.secvisogram.json',
-              getLoginEnabledConfig()
+              getLoginEnabledConfig(),
             ).as('wellKnownAppConfig')
             cy.intercept(
               getLoginEnabledConfig().userInfoUrl,
-              getUserInfo(user)
+              getUserInfo(user),
             ).as('apiGetUserInfo')
             cy.intercept('/api/v1/advisories', getGetAdvisoriesResponse()).as(
-              'apiGetAdvisories'
+              'apiGetAdvisories',
             )
 
             const advisoryDetail = getGetAdvisoryDetailResponse({
@@ -416,7 +421,7 @@ describe('SecvisogramPage', () => {
             })
             cy.intercept(
               `/api/v1/advisories/${advisory.advisoryId}`,
-              advisoryDetail
+              advisoryDetail,
             ).as('apiGetAdvisoryDetail')
 
             cy.visit('?tab=DOCUMENTS')
@@ -425,7 +430,7 @@ describe('SecvisogramPage', () => {
             cy.wait('@apiGetAdvisories')
 
             cy.get(
-              `[data-testid="advisory-${advisory.advisoryId}-list_entry-open_button"]`
+              `[data-testid="advisory-${advisory.advisoryId}-list_entry-open_button"]`,
             ).click()
             cy.wait('@apiGetAdvisoryDetail')
             cy.get('[data-testid="loading_indicator"]').should('not.exist')
@@ -433,7 +438,7 @@ describe('SecvisogramPage', () => {
 
             cy.get('[data-testid="new_export_document_button"]').click()
             cy.get(
-              `[data-testid="export_document-${select}_selector_button"]`
+              `[data-testid="export_document-${select}_selector_button"]`,
             ).click()
 
             const fileContentByFormat = new Map([
@@ -467,11 +472,11 @@ describe('SecvisogramPage', () => {
             ])
             cy.intercept(
               `/api/v1/advisories/${advisory.advisoryId}/csaf?format=${format}`,
-              fileContentByFormat.get(format)
+              fileContentByFormat.get(format),
             ).as('apiExportAdvisory')
 
             cy.get(
-              `[data-testid="export_document-export_document_button"]`
+              `[data-testid="export_document-export_document_button"]`,
             ).click()
 
             if (select === 'csaf-json-stripped') {
@@ -490,7 +495,7 @@ describe('SecvisogramPage', () => {
                   body = {}
                 }
                 expect(c).to.deep.equal(body)
-              }
+              },
             )
           })
         }
@@ -509,7 +514,7 @@ describe('SecvisogramPage', () => {
         cy.visit('?tab=EDITOR')
         cy.get('[data-testid="new_export_document_button"]').click()
         cy.get(
-          `[data-testid="export_document-${select}_selector_button"]`
+          `[data-testid="export_document-${select}_selector_button"]`,
         ).click()
 
         if (select === 'pdf') {
@@ -520,26 +525,26 @@ describe('SecvisogramPage', () => {
               cy.stub(win, 'print').as('printStub')
             })
           cy.get(
-            `[data-testid="export_document-export_document_button"]`
+            `[data-testid="export_document-export_document_button"]`,
           ).click()
           cy.get('@printStub').should('have.been.called')
         } else {
           cy.get(
-            `[data-testid="export_document-export_document_button"]`
+            `[data-testid="export_document-export_document_button"]`,
           ).click()
           cy.get(`[data-testid="alert-confirm_button"]`).click()
 
           if (select === 'csaf-json') {
             cy.readFile(
               `cypress/downloads/csaf_2_0_invalid.json`,
-              'utf-8'
+              'utf-8',
             ).then((c) => {
               expect(c).to.have.property('document')
             })
           } else if (select === 'csaf-json-stripped') {
             cy.readFile(
               `cypress/downloads/csaf_2_0_invalid.json`,
-              'utf-8'
+              'utf-8',
             ).then((c) => {
               expect(c).to.deep.equal({})
             })
@@ -575,7 +580,7 @@ describe('SecvisogramPage', () => {
 
         expect(state.formValues.doc.foo).to.equal(42)
         expect(state.formValues.doc.document.tracking.generator.date).to.equal(
-          timestamp.toISOString()
+          timestamp.toISOString(),
         )
       })
 
@@ -606,13 +611,13 @@ describe('SecvisogramPage', () => {
 
         expect(state.formValues.doc.foobar.test).to.equal(42)
         expect(state.formValues.doc.document.tracking.generator.date).to.equal(
-          timestamp.toISOString()
+          timestamp.toISOString(),
         )
         expect(
-          state.formValues.doc.document.tracking.generator.engine.name
+          state.formValues.doc.document.tracking.generator.engine.name,
         ).to.equal(generatorEngineData.name)
         expect(
-          state.formValues.doc.document.tracking.generator.engine.version
+          state.formValues.doc.document.tracking.generator.engine.version,
         ).to.equal(generatorEngineData.version)
       })
 
@@ -663,7 +668,7 @@ describe('SecvisogramPage', () => {
         const data = vector.data
         expect(data.version).to.equal('3.1')
         expect(data.vectorString).to.equal(
-          'CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:N'
+          'CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:N',
         )
         expect(data.baseScore).to.equal(7.3)
         expect(data.baseSeverity).to.equal('HIGH')
@@ -689,7 +694,7 @@ describe('SecvisogramPage', () => {
         const data = vector.data
         expect(data.version).to.equal('3.0')
         expect(data.vectorString).to.equal(
-          'CVSS:3.0/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:N'
+          'CVSS:3.0/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:N',
         )
         expect(data.baseScore).to.equal(7.3)
         expect(data.baseSeverity).to.equal('HIGH')
@@ -699,7 +704,7 @@ describe('SecvisogramPage', () => {
         const vector = new CVSSVector({
           availabilityImpact: 'NONE',
         }).updateFromVectorString(
-          'CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:N'
+          'CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:N',
         )
 
         expect(vector.data).to.contain({
@@ -719,7 +724,7 @@ describe('SecvisogramPage', () => {
         const vector = new CVSSVector({
           availabilityImpact: 'NONE',
         }).updateFromVectorString(
-          'CVSS:3.0/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:N'
+          'CVSS:3.0/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:N',
         )
 
         expect(vector.data).to.contain({
@@ -782,7 +787,7 @@ describe('SecvisogramPage', () => {
 
         const data = vector.data
         expect(data.vectorString).to.equal(
-          'CVSS:3.0/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:N'
+          'CVSS:3.0/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:N',
         )
         expect(data.baseScore).to.equal(7.3)
         expect(data.baseSeverity).to.equal('HIGH')
@@ -793,13 +798,13 @@ describe('SecvisogramPage', () => {
         const vector = new CVSSVector({
           vectorString: 'CVSS:3.0/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:N',
         }).updateFromVectorString(
-          'CVSS:3.0/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:N'
+          'CVSS:3.0/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:N',
         )
 
         expect(vector.canBeUpgraded).to.be.true
         const upgradedVector = vector.updateVectorStringTo31()
         expect(upgradedVector.data.vectorString).to.equal(
-          'CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:N'
+          'CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:N',
         )
         expect(upgradedVector.data.version).to.equal('3.1')
       })
@@ -813,7 +818,7 @@ describe('SecvisogramPage', () => {
       it('A 3.1 valid vector-string can not be upgraded', () => {
         const vector = new CVSSVector({})
           .updateFromVectorString(
-            'CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:N'
+            'CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:N',
           )
           .updateVectorStringTo31()
 

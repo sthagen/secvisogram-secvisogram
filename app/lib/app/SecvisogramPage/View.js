@@ -82,10 +82,10 @@ function View({
   const sortButtonRef = React.useRef(null)
 
   const [newDocumentDialog, setNewDocumentDialog] = React.useState(
-    /** @type {JSX.Element | null} */ (null)
+    /** @type {JSX.Element | null} */ (null),
   )
   const newDocumentDialogRef = React.useRef(
-    /** @type {HTMLDialogElement | null} */ (null)
+    /** @type {HTMLDialogElement | null} */ (null),
   )
   const { resetProductIdCounter } = useUniqueProductId()
   const { resetGroupIdCounter } = useUniqueGroupId()
@@ -98,14 +98,14 @@ function View({
   }, [newDocumentDialog])
 
   const [newExportDocumentDialog, setNewExportDocumentDialog] = React.useState(
-    /** @type {JSX.Element | null} */ (null)
+    /** @type {JSX.Element | null} */ (null),
   )
 
   const [versionSummaryDialog, setVersionSummaryDialog] = React.useState(
-    /** @type {JSX.Element | null} */ (null)
+    /** @type {JSX.Element | null} */ (null),
   )
   const versionSummaryDialogRef = React.useRef(
-    /** @type {HTMLDialogElement | null} */ (null)
+    /** @type {HTMLDialogElement | null} */ (null),
   )
   React.useEffect(() => {
     if (versionSummaryDialog) {
@@ -115,7 +115,7 @@ function View({
   }, [versionSummaryDialog])
 
   const [aboutDialog, setAboutDialog] = React.useState(
-    /** @type {JSX.Element | null} */ (null)
+    /** @type {JSX.Element | null} */ (null),
   )
 
   const [advisoryState, setAdvisoryState] = React.useState(
@@ -124,13 +124,13 @@ function View({
         type: 'NEW_ADVISORY',
         csaf: /** @type {{}} */ (data?.doc),
       }
-    )
+    ),
   )
   React.useEffect(() => {
     setAdvisoryState((state) =>
       data
         ? { type: 'NEW_ADVISORY', csaf: /** @type {{}} */ (data.doc) }
-        : state
+        : state,
     )
   }, [data])
 
@@ -144,7 +144,7 @@ function View({
   const [errors, setErrors] = React.useState(
     /** @type {Array<import('./shared/types').TypedValidationError>} */ (
       props.errors.map((e) => ({ ...e, type: 'error' }))
-    )
+    ),
   )
   React.useEffect(() => {
     setErrors(props.errors)
@@ -153,7 +153,7 @@ function View({
   const [alert, setAlert] = React.useState(
     /** @type {JSX.Element | null} */ (
       props.alert ? <Alert {...props.alert} /> : null
-    )
+    ),
   )
   React.useEffect(() => {
     setAlert(props.alert ? <Alert {...props.alert} /> : null)
@@ -169,10 +169,10 @@ function View({
         advisoryState?.type === 'NEW_ADVISORY'
           ? advisoryState.csaf
           : advisoryState?.type === 'ADVISORY'
-          ? advisoryState.advisory.csaf
-          : {},
+            ? advisoryState.advisory.csaf
+            : {},
     }),
-    [advisoryState]
+    [advisoryState],
   )
 
   /**
@@ -194,7 +194,7 @@ function View({
 
   const backendNotAvailableTryAgain = React.useMemo(
     () => t('alert.backendNotAvailableTryAgain'),
-    []
+    [],
   )
   React.useEffect(() => {
     if (applicationError instanceof BackendUnavailableError) {
@@ -245,14 +245,14 @@ function View({
                     t.warnings.map((w) => ({
                       ...w,
                       type: 'warning',
-                    }))
+                    })),
                   )
                   .concat(
                     t.infos.map((i) => ({
                       ...i,
                       type: 'info',
-                    }))
-                  )
+                    })),
+                  ),
               )
             )
           setErrors(errors)
@@ -282,7 +282,7 @@ function View({
                     type: 'ADVISORY',
                     advisory,
                   })
-                })
+                }),
               )
               .catch(handleError)
               .finally(() => {
@@ -291,7 +291,7 @@ function View({
           }}
           prefilledData={{ summary: '', legacyVersion: '' }}
           onClose={() => setVersionSummaryDialog(null)}
-        />
+        />,
       )
     } else if (advisoryState?.type === 'ADVISORY') {
       setVersionSummaryDialog(
@@ -314,7 +314,7 @@ function View({
                     type: 'ADVISORY',
                     advisory,
                   })
-                })
+                }),
               )
               .catch(handleError)
               .finally(() => {
@@ -323,7 +323,7 @@ function View({
           }}
           prefilledData={getSummaryAndLegacyVersion()}
           onClose={() => setVersionSummaryDialog(null)}
-        />
+        />,
       )
     }
   }
@@ -380,16 +380,16 @@ function View({
                               err.name == 'SyntaxError'
                                 ? t('error.invalidJSON')
                                 : t('error.failedToLoadFromURL'),
-                          })
+                          }),
                         )
                       break
                   }
                 })
               }}
               onClose={() => setNewDocumentDialog(null)}
-            />
+            />,
           )
-        })
+        }),
       )
     } else {
       setLoading(true)
@@ -430,14 +430,14 @@ function View({
                               err.name == 'SyntaxError'
                                 ? t('error.invalidJSON')
                                 : t('error.failedToLoadFromURL'),
-                          })
+                          }),
                         )
                       break
                   }
                 })
               }}
               onClose={() => setNewDocumentDialog(null)}
-            />
+            />,
           )
         })
         .catch(handleError)
@@ -453,10 +453,10 @@ function View({
 
   const openExportDialogPreselected = (
     /** @type {'CSAFJSON'
-     | 'CSAFJSONSTRIPPED'
-     | 'HTMLDOCUMENT'
-     | 'PDFDOCUMENT'
-     | 'MARKDOWN'} */ preselected
+    | 'CSAFJSONSTRIPPED'
+    | 'HTMLDOCUMENT'
+    | 'PDFDOCUMENT'
+    | 'MARKDOWN'} */ preselected,
   ) => {
     setNewExportDocumentDialog(
       <ExportDocumentDialog
@@ -473,7 +473,7 @@ function View({
         onClose={() => {
           setNewExportDocumentDialog(null)
         }}
-      />
+      />,
     )
   }
 
@@ -493,7 +493,7 @@ function View({
         instancePath: '/' + instancePath.join('/'),
       })
     },
-    [generatorEngineData]
+    [generatorEngineData],
   )
 
   /**
@@ -505,7 +505,7 @@ function View({
     (/** @type {unknown} */ newSerializedDoc) => {
       dispatch({ type: 'RESET_FORM_DOC', doc: newSerializedDoc })
     },
-    []
+    [],
   )
 
   const onStripCallback = React.useCallback(() => {
@@ -535,7 +535,7 @@ function View({
             resetGroupIdCounter()
             callback()
           }}
-        />
+        />,
       )
     } else {
       callback()
@@ -592,8 +592,8 @@ function View({
           activeTab === tab
             ? 'bg-slate-900 text-white'
             : isTabLocked
-            ? 'text-gray-500'
-            : 'hover:bg-slate-800 hover:text-white text-gray-300',
+              ? 'text-gray-500'
+              : 'hover:bg-slate-800 hover:text-white text-gray-300',
         ].join(' '),
         onClick() {
           onReplaceDoc(pruneEmpty(formValues.doc))
@@ -601,7 +601,7 @@ function View({
         },
       }
     },
-    [activeTab, onReplaceDoc, onChangeTab, formValues.doc, isTabLocked]
+    [activeTab, onReplaceDoc, onChangeTab, formValues.doc, isTabLocked],
   )
 
   const getSummaryAndLegacyVersion = () => {
@@ -621,7 +621,7 @@ function View({
         const revisionHistoryCopy = [...tracking.revision_history]
         const latestRevisionHistoryItem = revisionHistoryCopy.sort(
           (/** @type {{date: string}} */ a, /** @type {{date: string}} */ z) =>
-            new Date(z.date).getTime() - new Date(a.date).getTime()
+            new Date(z.date).getTime() - new Date(a.date).getTime(),
         )[0]
         prefilledSummary = latestRevisionHistoryItem.summary
         prefilledLegacyVersion = latestRevisionHistoryItem.legacy_version
@@ -697,10 +697,10 @@ function View({
     if (errors.length) {
       const selectedPathAsString = '/' + selectedPath.join('/')
       const currentlySelectedErrorsIndex = errors.findIndex(
-        (e) => e.instancePath === '/' + selectedPath.join('/')
+        (e) => e.instancePath === '/' + selectedPath.join('/'),
       )
       const numErrorsForPath = errors.filter(
-        (e) => e.instancePath === selectedPathAsString
+        (e) => e.instancePath === selectedPathAsString,
       ).length
       let indexOfNextError = currentlySelectedErrorsIndex + numErrorsForPath
       if (
@@ -750,14 +750,14 @@ function View({
       onReplaceDoc,
       onCollectProductIds,
       onCollectGroupIds,
-    ]
+    ],
   )
 
   const [sideBarIsOpen, setSideBarIsOpen] = React.useState(
-    /** @type {boolean} */ false
+    /** @type {boolean} */ false,
   )
   const [sideBarSelectedPath, setSideBarSelectedPath] = React.useState(
-    /** @type {string[]} */ ([])
+    /** @type {string[]} */ ([]),
   )
   const [sideBarContent, setSideBarContent] = React.useState('ERRORS')
   const sideBarData = {
@@ -770,7 +770,7 @@ function View({
   }
 
   const [selectedPath, setSelectedPath] = React.useState(
-    /** @type {string[]} */ ([])
+    /** @type {string[]} */ ([]),
   )
 
   /** @type {string[]} */
@@ -784,7 +784,7 @@ function View({
   ]
 
   const [selectedRelevanceLevel, _setSelectedRelevanceLevel] = React.useState(
-    relevanceLevels[2]
+    relevanceLevels[2],
   )
   const setSelectedRelevanceLevel = (/** @type {string} */ level) => {
     selectClosestRelevantPath(level, uiSchemaVersion)
@@ -853,7 +853,7 @@ function View({
                               setAboutDialog(null)
                             }}
                             backendVersion={backendVersion}
-                          />
+                          />,
                         )
                       }}
                     >
@@ -874,7 +874,7 @@ function View({
                           onSetUiVersion(
                             /** @type {import('#lib/uiSchemas.js').UiSchemaVersion} */ (
                               e.target.value
-                            )
+                            ),
                           )
                         }}
                       >
@@ -1066,7 +1066,7 @@ function View({
                                   'px-3 mx-1 h-full hover:bg-slate-700 hover:text-white' +
                                   (idx <=
                                   relevanceLevels.indexOf(
-                                    selectedRelevanceLevel
+                                    selectedRelevanceLevel,
                                   )
                                     ? ' bg-slate-800 hover:bg-slate-800'
                                     : '')
@@ -1112,7 +1112,7 @@ function View({
                           },
                         ].map(({ type, color }) => {
                           const count = errors.filter(
-                            (e) => e.type === type
+                            (e) => e.type === type,
                           ).length
 
                           return (

@@ -1,4 +1,4 @@
-import codeCoverageTasks from '@cypress/code-coverage/task.js'
+import codeCoverageTasks from '@cypress/code-coverage/task'
 import webpackPreprocessor from '@cypress/webpack-preprocessor'
 import { defineConfig } from 'cypress'
 import { rm } from 'fs/promises'
@@ -30,7 +30,7 @@ export default defineConfig({
               ],
             },
           },
-        })
+        }),
       )
 
       on('task', {

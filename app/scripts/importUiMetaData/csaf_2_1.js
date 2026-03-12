@@ -10,7 +10,7 @@ const { metaData, jsonSchema } = uiSchemas['v2.1']
 
 /** @type {CVSS2JSONSchema} */
 const cvss2Schema = JSON.parse(
-  await readFile(new URL('cvss-v2.0.json', import.meta.url), 'utf-8')
+  await readFile(new URL('cvss-v2.0.json', import.meta.url), 'utf-8'),
 )
 
 const defs = /** @type {import('./csaf_2_1/types.js').Defs} */ (
@@ -20,7 +20,7 @@ const defs = /** @type {import('./csaf_2_1/types.js').Defs} */ (
 const metaDataMap = new Map(Object.entries(metaData))
 
 const outputFile = fileURLToPath(
-  new URL('../../lib/uiSchemas/csaf_2_1/content.js', import.meta.url)
+  new URL('../../lib/uiSchemas/csaf_2_1/content.js', import.meta.url),
 )
 const prettierString = prettier.format(
   `/** @type {import('#lib/app/SecvisogramPage/shared/types.js').Property} */
@@ -28,13 +28,13 @@ export default (${JSON.stringify(
     convertSchema(
       /** @type {import('./csaf_2_1/types.js').Schema} */ (jsonSchema),
       defs,
-      []
-    )
+      [],
+    ),
   )})`,
   {
     ...(await prettier.resolveConfig(outputFile)),
     filepath: outputFile,
-  }
+  },
 )
 await writeFile(outputFile, prettierString, 'utf8')
 
@@ -71,7 +71,7 @@ function convertSchema(subschema, defs, path) {
         : undefined,
     metaData: metaData && {
       ...Object.fromEntries(
-        Object.entries(metaData).filter(([key]) => key !== 'propertyOrder')
+        Object.entries(metaData).filter(([key]) => key !== 'propertyOrder'),
       ),
       i18n:
         'i18n' in metaData
@@ -110,8 +110,8 @@ function convertSchema(subschema, defs, path) {
   ) {
     const properties = Object.fromEntries(
       Object.entries(subschema.items.properties).filter(
-        ([key]) => key !== 'branches'
-      )
+        ([key]) => key !== 'branches',
+      ),
     )
     const arrayType =
       /** @type {import('./csaf_2_1/types.js').ObjectUiSchema} */ (
@@ -142,7 +142,7 @@ function convertSchema(subschema, defs, path) {
       resolvedSchema = convertSchema(
         /** @type {import('./csaf_2_1/types.js').Schema} */ (cvss2Schema),
         /** @type {import('./csaf_2_1/types.js').Defs} */ (cvss2Schema.$defs),
-        path
+        path,
       )
     } else {
       const refName = subschema.$ref
@@ -151,7 +151,7 @@ function convertSchema(subschema, defs, path) {
       const ref = defs[refName]
       if (!ref) {
         throw new Error(
-          'Ref with name `' + refName + '` not found (`' + strPath + '`)'
+          'Ref with name `' + refName + '` not found (`' + strPath + '`)',
         )
       }
       resolvedSchema = convertSchema(ref, defs, path)
@@ -222,10 +222,10 @@ function convertSchema(subschema, defs, path) {
           subschema.format === 'date-time'
             ? 'STRING_DATETIME'
             : subschema.format === 'uri'
-            ? 'STRING_URI'
-            : subschema.enum !== undefined
-            ? 'STRING_ENUM'
-            : undefined,
+              ? 'STRING_URI'
+              : subschema.enum !== undefined
+                ? 'STRING_ENUM'
+                : undefined,
         ...commonUiSchemaFields.metaData,
       },
       type: 'STRING',
