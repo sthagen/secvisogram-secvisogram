@@ -61,7 +61,7 @@ const SecvisogramPage = () => {
     ),
     isTabLocked: false,
     /** @type {import('../uiSchemas.js').UiSchemaVersion} */
-    uiSchemaVersion: 'v2.1',
+    uiSchemaVersion: 'v2.0',
   })
   const core = coreRecord[uiSchemaVersion]
   const [doc, setDoc] = React.useState(core.newDocMin())

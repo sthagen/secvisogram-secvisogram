@@ -3,8 +3,8 @@
 import CVSSVector from '../../lib/app/SecvisogramPage/View/FormEditor/editors/GenericEditor/Attributes/CVSS3Attribute/CVSSVector.js'
 import ViewReducer from '../../lib/app/SecvisogramPage/View/Reducer.js'
 import { canCreateDocuments } from '../../lib/app/shared/permissions.js'
-import docMax from '../../lib/core/v2_1/doc-max.json'
-import docMin from '../../lib/core/v2_1/doc-min.json'
+import docMax from '../../lib/core/v2_0/doc-max.json'
+import docMin from '../../lib/core/v2_0/doc-min.json'
 import { getLoginEnabledConfig } from '../fixtures/appConfigData.js'
 import {
   getAdvisories,
@@ -23,6 +23,35 @@ import sampleUploadDocument from '../fixtures/sampleUploadDocument.js'
 describe('SecvisogramPage', () => {
   beforeEach(function () {
     cy.task('rm', Cypress.config('downloadsFolder'))
+  })
+
+  describe('csaf version selection', function () {
+    it('requires confirmation before switching to v2.1 beta', function () {
+      cy.intercept('/.well-known/appspecific/de.bsi.secvisogram.json', {
+        statusCode: 404,
+        body: {},
+      }).as('wellKnownAppConfig')
+
+      cy.visit('?tab=EDITOR')
+      cy.wait('@wellKnownAppConfig')
+
+      cy.get('#csafVersionSelect').should('have.value', 'v2.0')
+      cy.get('#csafVersionSelect option[value="v2.1"]').should(
+        'have.text',
+        'v2.1 (Beta)',
+      )
+
+      cy.get('#csafVersionSelect').select('v2.1')
+      cy.get('[data-testid="beta_version_dialog"]').should('exist')
+      cy.get('[data-testid="beta_version-cancel_button"]').click()
+      cy.get('[data-testid="beta_version_dialog"]').should('not.exist')
+      cy.get('#csafVersionSelect').should('have.value', 'v2.0')
+
+      cy.get('#csafVersionSelect').select('v2.1')
+      cy.get('[data-testid="beta_version-confirm_button"]').click()
+      cy.get('[data-testid="beta_version_dialog"]').should('not.exist')
+      cy.get('#csafVersionSelect').should('have.value', 'v2.1')
+    })
   })
 
   describe('can validate the document against the rest service', function () {

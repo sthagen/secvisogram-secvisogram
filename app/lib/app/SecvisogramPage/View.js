@@ -14,6 +14,7 @@ import { canCreateDocuments } from '../shared/permissions.js'
 import pruneEmpty from '../shared/pruneEmpty.js'
 import isPropertyRelevant from './shared/isPropertyRelevant.js'
 import AboutDialog from './View/AboutDialog.js'
+import BetaVersionConfirmationDialog from './View/BetaVersionConfirmationDialog.js'
 import CsafTab from './View/CsafTab.js'
 import ExportDocumentDialog from './View/ExportDocumentDialog.js'
 import RelevanceLevelContext from './View/FormEditor/shared/context/RelevanceLevelContext.js'
@@ -117,6 +118,18 @@ function View({
   const [aboutDialog, setAboutDialog] = React.useState(
     /** @type {JSX.Element | null} */ (null),
   )
+
+  const [betaVersionDialog, setBetaVersionDialog] = React.useState(
+    /** @type {JSX.Element | null} */ (null),
+  )
+  const betaVersionDialogRef = React.useRef(
+    /** @type {HTMLDialogElement | null} */ (null),
+  )
+  React.useEffect(() => {
+    if (betaVersionDialog) {
+      betaVersionDialogRef.current?.showModal()
+    }
+  }, [betaVersionDialog])
 
   const [advisoryState, setAdvisoryState] = React.useState(
     /** @type {import('./shared/types.js').AdvisoryState | null} */ (
@@ -819,6 +832,7 @@ function View({
             {newExportDocumentDialog}
             {versionSummaryDialog}
             {aboutDialog}
+            {betaVersionDialog}
             <Hotkeys
               keyName={getAllKeybindings()}
               onKeyDown={keyDownHandler}
@@ -871,16 +885,39 @@ function View({
                         className="border border-gray-400 py-2 px-2 w-full shadow-inner rounded text-black bg-white"
                         value={uiSchemaVersion}
                         onChange={(e) => {
-                          onSetUiVersion(
+                          const selectedVersion =
                             /** @type {import('#lib/uiSchemas.js').UiSchemaVersion} */ (
                               e.target.value
-                            ),
-                          )
+                            )
+                          if (selectedVersion === 'v2.1') {
+                            // In case of 2.1 we open a confirmation dialog to
+                            // warn the user that the csaf 2.1 feature set is
+                            // not complete yet and therefore "beta" ...
+                            setBetaVersionDialog(
+                              <BetaVersionConfirmationDialog
+                                ref={betaVersionDialogRef}
+                                onConfirm={() => {
+                                  onSetUiVersion('v2.1')
+                                  setBetaVersionDialog(null)
+                                }}
+                                onClose={() => {
+                                  setBetaVersionDialog(null)
+                                }}
+                              />,
+                            )
+                            return
+                          } else {
+                            // ... otherwise we just switch to the requested
+                            // version.
+                            onSetUiVersion(selectedVersion)
+                          }
                         }}
                       >
                         {Object.keys(uiSchemas).map((uiVersion) => (
                           <option key={uiVersion} value={uiVersion}>
-                            {uiVersion}
+                            {uiVersion === 'v2.1'
+                              ? `${uiVersion} (Beta)`
+                              : uiVersion}
                           </option>
                         ))}
                       </select>
