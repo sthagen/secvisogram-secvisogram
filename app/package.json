@@ -81,7 +81,7 @@
     "babel-loader": "^8.4.1",
     "babel-plugin-istanbul": "^6.1.1",
     "chai": "^4.5.0",
-    "copy-webpack-plugin": "^10.2.4",
+    "copy-webpack-plugin": "^14.0.0",
     "css-loader": "^6.11.0",
     "cypress": "^15.10.0",
     "eslint": "^9.39.2",
