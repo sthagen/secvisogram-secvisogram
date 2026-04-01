@@ -807,6 +807,40 @@ export default {
               type: 'STRING',
             },
             {
+              key: 'license_expression',
+              fullName: ['document', 'license_expression'],
+              title: 'License expression',
+              description:
+                'Contains the SPDX license expression for the CSAF document.',
+              metaData: {
+                userDocumentation: {
+                  specification:
+                    'docs/user/document/license_expression-spec.en.md',
+                  usage: 'docs/user/document/license_expression-usage.en.md',
+                },
+                relevanceLevels: {
+                  csaf_base: 'nice_to_know',
+                  csaf_security_incident_response: 'nice_to_know',
+                  csaf_informational_advisory: 'nice_to_know',
+                  csaf_security_advisory: 'want_to_have',
+                  csaf_vex: 'want_to_have',
+                },
+                i18n: {
+                  title: 'v2_1.DocumentLicenseExpressionTitle',
+                  description: 'v2_1.DocumentLicenseExpressionDescription',
+                },
+              },
+              minLength: 1,
+              examples: [
+                'CC-BY-4.0',
+                'LicenseRef-www.example.org-Example-CSAF-License-3.0+',
+                'LicenseRef-scancode-public-domain',
+                'MIT OR any-OSI',
+              ],
+              metaInfo: {},
+              type: 'STRING',
+            },
+            {
               key: 'notes',
               fullName: ['document', 'notes'],
               title: 'Document notes',
@@ -931,6 +965,114 @@ export default {
                         ],
                         metaInfo: {},
                         type: 'STRING',
+                      },
+                      {
+                        key: 'group_ids',
+                        fullName: ['document', 'notes', 'group_ids'],
+                        title: 'List of product_group_ids',
+                        description:
+                          'Specifies a list of product_group_ids to give context to the parent item.',
+                        metaData: {
+                          relevanceLevels: {
+                            csaf_base: 'optional',
+                            csaf_security_incident_response: 'nice_to_know',
+                            csaf_informational_advisory: 'nice_to_know',
+                            csaf_security_advisory: 'nice_to_know',
+                            csaf_vex: 'nice_to_know',
+                          },
+                          i18n: {
+                            title: 'v2_1.ProductGroupsTitle',
+                            description: 'v2_1.ProductGroupsDescription',
+                          },
+                        },
+                        type: 'ARRAY',
+                        metaInfo: {
+                          arrayType: {
+                            key: '',
+                            fullName: ['document', 'notes', 'group_ids'],
+                            title: 'Reference token for product group instance',
+                            description:
+                              'Token required to identify a group of products so that it can be referred to from other parts in the document. There is no predefined or required format for the product_group_id as long as it uniquely identifies a group in the context of the current document.',
+                            metaData: {
+                              uiType: 'STRING_GROUP_ID',
+                              i18n: {
+                                title: 'v2_1.ProductGroupIdTitle',
+                                description: 'v2_1.ProductGroupIdDescription',
+                              },
+                              itemName: {
+                                itemNameTranslationKey:
+                                  'arrays.productGroupIdsItemName',
+                              },
+                              relevanceLevels: {
+                                csaf_base: 'optional',
+                                csaf_security_incident_response: 'nice_to_know',
+                                csaf_informational_advisory: 'nice_to_know',
+                                csaf_security_advisory: 'nice_to_know',
+                                csaf_vex: 'nice_to_know',
+                              },
+                            },
+                            minLength: 1,
+                            examples: [
+                              'CSAFGID-0001',
+                              'CSAFGID-0002',
+                              'CSAFGID-0020',
+                            ],
+                            metaInfo: {},
+                            type: 'STRING',
+                          },
+                        },
+                      },
+                      {
+                        key: 'product_ids',
+                        fullName: ['document', 'notes', 'product_ids'],
+                        title: 'List of product_ids',
+                        description:
+                          'Specifies a list of product_ids to give context to the parent item.',
+                        metaData: {
+                          relevanceLevels: {
+                            csaf_base: 'optional',
+                            csaf_security_incident_response: 'nice_to_know',
+                            csaf_informational_advisory: 'nice_to_know',
+                            csaf_security_advisory: 'nice_to_know',
+                            csaf_vex: 'nice_to_know',
+                          },
+                          i18n: {
+                            title: 'v2_1.ProductsTitle',
+                            description: 'v2_1.ProductsDescription',
+                          },
+                        },
+                        type: 'ARRAY',
+                        metaInfo: {
+                          arrayType: {
+                            key: '',
+                            fullName: ['document', 'notes', 'product_ids'],
+                            title: 'Reference token for product instance',
+                            description:
+                              'Token required to identify a full_product_name so that it can be referred to from other parts in the document. There is no predefined or required format for the product_id as long as it uniquely identifies a product in the context of the current document.',
+                            metaData: {
+                              uiType: 'STRING_PRODUCT_ID',
+                              i18n: {
+                                title: 'v2_1.ProductIdTitle',
+                                description: 'v2_1.ProductIdDescription',
+                              },
+                              itemName: {
+                                itemNameTranslationKey:
+                                  'arrays.productsItemName',
+                              },
+                              relevanceLevels: {
+                                csaf_base: 'optional',
+                                csaf_security_incident_response: 'nice_to_know',
+                                csaf_informational_advisory: 'nice_to_know',
+                                csaf_security_advisory: 'nice_to_know',
+                                csaf_vex: 'nice_to_know',
+                              },
+                            },
+                            minLength: 1,
+                            examples: ['CSAFPID-0004', 'CSAFPID-0008'],
+                            metaInfo: {},
+                            type: 'STRING',
+                          },
+                        },
                       },
                       {
                         key: 'text',
@@ -6530,6 +6672,189 @@ export default {
                   type: 'STRING',
                 },
                 {
+                  key: 'first_known_exploitation_dates',
+                  fullName: [
+                    'vulnerabilities',
+                    'first_known_exploitation_dates',
+                  ],
+                  title: 'List of first known exploitation dates',
+                  description:
+                    'Contains a list of dates of first known exploitations.',
+                  type: 'ARRAY',
+                  metaInfo: {
+                    arrayType: {
+                      key: '',
+                      fullName: [
+                        'vulnerabilities',
+                        'first_known_exploitation_dates',
+                      ],
+                      title: 'First known exploitation date',
+                      description:
+                        'Contains information on when this vulnerability was first known to be exploited in the wild in the products specified.',
+                      metaData: {},
+                      type: 'OBJECT',
+                      metaInfo: {
+                        propertyList: [
+                          {
+                            key: 'date',
+                            fullName: [
+                              'vulnerabilities',
+                              'first_known_exploitation_dates',
+                              'date',
+                            ],
+                            title: 'Date of the information',
+                            description:
+                              'Contains the date when the information was last updated.',
+                            metaData: { uiType: 'STRING_DATETIME' },
+                            metaInfo: {},
+                            type: 'STRING',
+                          },
+                          {
+                            key: 'exploitation_date',
+                            fullName: [
+                              'vulnerabilities',
+                              'first_known_exploitation_dates',
+                              'exploitation_date',
+                            ],
+                            title: 'Date of the exploitation',
+                            description:
+                              'Contains the date when the exploitation happened.',
+                            metaData: { uiType: 'STRING_DATETIME' },
+                            metaInfo: {},
+                            type: 'STRING',
+                          },
+                          {
+                            key: 'group_ids',
+                            fullName: [
+                              'vulnerabilities',
+                              'first_known_exploitation_dates',
+                              'group_ids',
+                            ],
+                            title: 'List of product_group_ids',
+                            description:
+                              'Specifies a list of product_group_ids to give context to the parent item.',
+                            metaData: {
+                              relevanceLevels: {
+                                csaf_base: 'optional',
+                                csaf_security_incident_response: 'optional',
+                                csaf_informational_advisory: 'excluded',
+                                csaf_security_advisory: 'optional',
+                                csaf_vex: 'optional',
+                              },
+                              i18n: {
+                                title: 'v2_1.ProductGroupsTitle',
+                                description: 'v2_1.ProductGroupsDescription',
+                              },
+                            },
+                            type: 'ARRAY',
+                            metaInfo: {
+                              arrayType: {
+                                key: '',
+                                fullName: [
+                                  'vulnerabilities',
+                                  'first_known_exploitation_dates',
+                                  'group_ids',
+                                ],
+                                title:
+                                  'Reference token for product group instance',
+                                description:
+                                  'Token required to identify a group of products so that it can be referred to from other parts in the document. There is no predefined or required format for the product_group_id as long as it uniquely identifies a group in the context of the current document.',
+                                metaData: {
+                                  uiType: 'STRING_GROUP_ID',
+                                  i18n: {
+                                    title: 'v2_1.ProductGroupIdTitle',
+                                    description:
+                                      'v2_1.ProductGroupIdDescription',
+                                  },
+                                  itemName: {
+                                    itemNameTranslationKey:
+                                      'arrays.productGroupIdsItemName',
+                                  },
+                                  relevanceLevels: {
+                                    csaf_base: 'optional',
+                                    csaf_security_incident_response: 'optional',
+                                    csaf_informational_advisory: 'excluded',
+                                    csaf_security_advisory: 'optional',
+                                    csaf_vex: 'optional',
+                                  },
+                                },
+                                minLength: 1,
+                                examples: [
+                                  'CSAFGID-0001',
+                                  'CSAFGID-0002',
+                                  'CSAFGID-0020',
+                                ],
+                                metaInfo: {},
+                                type: 'STRING',
+                              },
+                            },
+                          },
+                          {
+                            key: 'product_ids',
+                            fullName: [
+                              'vulnerabilities',
+                              'first_known_exploitation_dates',
+                              'product_ids',
+                            ],
+                            title: 'List of product_ids',
+                            description:
+                              'Specifies a list of product_ids to give context to the parent item.',
+                            metaData: {
+                              relevanceLevels: {
+                                csaf_base: 'optional',
+                                csaf_security_incident_response: 'optional',
+                                csaf_informational_advisory: 'excluded',
+                                csaf_security_advisory: 'optional',
+                                csaf_vex: 'optional',
+                              },
+                              i18n: {
+                                title: 'v2_1.ProductsTitle',
+                                description: 'v2_1.ProductsDescription',
+                              },
+                            },
+                            type: 'ARRAY',
+                            metaInfo: {
+                              arrayType: {
+                                key: '',
+                                fullName: [
+                                  'vulnerabilities',
+                                  'first_known_exploitation_dates',
+                                  'product_ids',
+                                ],
+                                title: 'Reference token for product instance',
+                                description:
+                                  'Token required to identify a full_product_name so that it can be referred to from other parts in the document. There is no predefined or required format for the product_id as long as it uniquely identifies a product in the context of the current document.',
+                                metaData: {
+                                  uiType: 'STRING_PRODUCT_ID',
+                                  i18n: {
+                                    title: 'v2_1.ProductIdTitle',
+                                    description: 'v2_1.ProductIdDescription',
+                                  },
+                                  itemName: {
+                                    itemNameTranslationKey:
+                                      'arrays.productsItemName',
+                                  },
+                                  relevanceLevels: {
+                                    csaf_base: 'optional',
+                                    csaf_security_incident_response: 'optional',
+                                    csaf_informational_advisory: 'excluded',
+                                    csaf_security_advisory: 'optional',
+                                    csaf_vex: 'optional',
+                                  },
+                                },
+                                minLength: 1,
+                                examples: ['CSAFPID-0004', 'CSAFPID-0008'],
+                                metaInfo: {},
+                                type: 'STRING',
+                              },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  },
+                },
+                {
                   key: 'flags',
                   fullName: ['vulnerabilities', 'flags'],
                   title: 'List of flags',
@@ -7033,6 +7358,73 @@ export default {
                             type: 'STRING',
                           },
                           {
+                            key: 'group_ids',
+                            fullName: [
+                              'vulnerabilities',
+                              'involvements',
+                              'group_ids',
+                            ],
+                            title: 'List of product_group_ids',
+                            description:
+                              'Specifies a list of product_group_ids to give context to the parent item.',
+                            metaData: {
+                              relevanceLevels: {
+                                csaf_base: 'optional',
+                                csaf_security_incident_response: 'nice_to_know',
+                                csaf_informational_advisory: 'excluded',
+                                csaf_security_advisory: 'nice_to_know',
+                                csaf_vex: 'nice_to_know',
+                              },
+                              i18n: {
+                                title: 'v2_1.ProductGroupsTitle',
+                                description: 'v2_1.ProductGroupsDescription',
+                              },
+                            },
+                            type: 'ARRAY',
+                            metaInfo: {
+                              arrayType: {
+                                key: '',
+                                fullName: [
+                                  'vulnerabilities',
+                                  'involvements',
+                                  'group_ids',
+                                ],
+                                title:
+                                  'Reference token for product group instance',
+                                description:
+                                  'Token required to identify a group of products so that it can be referred to from other parts in the document. There is no predefined or required format for the product_group_id as long as it uniquely identifies a group in the context of the current document.',
+                                metaData: {
+                                  uiType: 'STRING_GROUP_ID',
+                                  i18n: {
+                                    title: 'v2_1.ProductGroupIdTitle',
+                                    description:
+                                      'v2_1.ProductGroupIdDescription',
+                                  },
+                                  itemName: {
+                                    itemNameTranslationKey:
+                                      'arrays.productGroupIdsItemName',
+                                  },
+                                  relevanceLevels: {
+                                    csaf_base: 'optional',
+                                    csaf_security_incident_response:
+                                      'nice_to_know',
+                                    csaf_informational_advisory: 'excluded',
+                                    csaf_security_advisory: 'nice_to_know',
+                                    csaf_vex: 'nice_to_know',
+                                  },
+                                },
+                                minLength: 1,
+                                examples: [
+                                  'CSAFGID-0001',
+                                  'CSAFGID-0002',
+                                  'CSAFGID-0020',
+                                ],
+                                metaInfo: {},
+                                type: 'STRING',
+                              },
+                            },
+                          },
+                          {
                             key: 'party',
                             fullName: [
                               'vulnerabilities',
@@ -7073,6 +7465,67 @@ export default {
                             ],
                             metaInfo: {},
                             type: 'STRING',
+                          },
+                          {
+                            key: 'product_ids',
+                            fullName: [
+                              'vulnerabilities',
+                              'involvements',
+                              'product_ids',
+                            ],
+                            title: 'List of product_ids',
+                            description:
+                              'Specifies a list of product_ids to give context to the parent item.',
+                            metaData: {
+                              relevanceLevels: {
+                                csaf_base: 'optional',
+                                csaf_security_incident_response: 'nice_to_know',
+                                csaf_informational_advisory: 'excluded',
+                                csaf_security_advisory: 'nice_to_know',
+                                csaf_vex: 'nice_to_know',
+                              },
+                              i18n: {
+                                title: 'v2_1.ProductsTitle',
+                                description: 'v2_1.ProductsDescription',
+                              },
+                            },
+                            type: 'ARRAY',
+                            metaInfo: {
+                              arrayType: {
+                                key: '',
+                                fullName: [
+                                  'vulnerabilities',
+                                  'involvements',
+                                  'product_ids',
+                                ],
+                                title: 'Reference token for product instance',
+                                description:
+                                  'Token required to identify a full_product_name so that it can be referred to from other parts in the document. There is no predefined or required format for the product_id as long as it uniquely identifies a product in the context of the current document.',
+                                metaData: {
+                                  uiType: 'STRING_PRODUCT_ID',
+                                  i18n: {
+                                    title: 'v2_1.ProductIdTitle',
+                                    description: 'v2_1.ProductIdDescription',
+                                  },
+                                  itemName: {
+                                    itemNameTranslationKey:
+                                      'arrays.productsItemName',
+                                  },
+                                  relevanceLevels: {
+                                    csaf_base: 'optional',
+                                    csaf_security_incident_response:
+                                      'nice_to_know',
+                                    csaf_informational_advisory: 'excluded',
+                                    csaf_security_advisory: 'nice_to_know',
+                                    csaf_vex: 'nice_to_know',
+                                  },
+                                },
+                                minLength: 1,
+                                examples: ['CSAFPID-0004', 'CSAFPID-0008'],
+                                metaInfo: {},
+                                type: 'STRING',
+                              },
+                            },
                           },
                           {
                             key: 'status',
@@ -8391,6 +8844,130 @@ export default {
                             type: 'STRING',
                           },
                           {
+                            key: 'group_ids',
+                            fullName: ['vulnerabilities', 'notes', 'group_ids'],
+                            title: 'List of product_group_ids',
+                            description:
+                              'Specifies a list of product_group_ids to give context to the parent item.',
+                            metaData: {
+                              relevanceLevels: {
+                                csaf_base: 'optional',
+                                csaf_security_incident_response: 'want_to_have',
+                                csaf_informational_advisory: 'excluded',
+                                csaf_security_advisory: 'optional',
+                                csaf_vex: 'optional',
+                              },
+                              i18n: {
+                                title: 'v2_1.ProductGroupsTitle',
+                                description: 'v2_1.ProductGroupsDescription',
+                              },
+                            },
+                            type: 'ARRAY',
+                            metaInfo: {
+                              arrayType: {
+                                key: '',
+                                fullName: [
+                                  'vulnerabilities',
+                                  'notes',
+                                  'group_ids',
+                                ],
+                                title:
+                                  'Reference token for product group instance',
+                                description:
+                                  'Token required to identify a group of products so that it can be referred to from other parts in the document. There is no predefined or required format for the product_group_id as long as it uniquely identifies a group in the context of the current document.',
+                                metaData: {
+                                  uiType: 'STRING_GROUP_ID',
+                                  i18n: {
+                                    title: 'v2_1.ProductGroupIdTitle',
+                                    description:
+                                      'v2_1.ProductGroupIdDescription',
+                                  },
+                                  itemName: {
+                                    itemNameTranslationKey:
+                                      'arrays.productGroupIdsItemName',
+                                  },
+                                  relevanceLevels: {
+                                    csaf_base: 'optional',
+                                    csaf_security_incident_response:
+                                      'want_to_have',
+                                    csaf_informational_advisory: 'excluded',
+                                    csaf_security_advisory: 'optional',
+                                    csaf_vex: 'optional',
+                                  },
+                                },
+                                minLength: 1,
+                                examples: [
+                                  'CSAFGID-0001',
+                                  'CSAFGID-0002',
+                                  'CSAFGID-0020',
+                                ],
+                                metaInfo: {},
+                                type: 'STRING',
+                              },
+                            },
+                          },
+                          {
+                            key: 'product_ids',
+                            fullName: [
+                              'vulnerabilities',
+                              'notes',
+                              'product_ids',
+                            ],
+                            title: 'List of product_ids',
+                            description:
+                              'Specifies a list of product_ids to give context to the parent item.',
+                            metaData: {
+                              relevanceLevels: {
+                                csaf_base: 'optional',
+                                csaf_security_incident_response: 'want_to_have',
+                                csaf_informational_advisory: 'excluded',
+                                csaf_security_advisory: 'optional',
+                                csaf_vex: 'optional',
+                              },
+                              i18n: {
+                                title: 'v2_1.ProductsTitle',
+                                description: 'v2_1.ProductsDescription',
+                              },
+                            },
+                            type: 'ARRAY',
+                            metaInfo: {
+                              arrayType: {
+                                key: '',
+                                fullName: [
+                                  'vulnerabilities',
+                                  'notes',
+                                  'product_ids',
+                                ],
+                                title: 'Reference token for product instance',
+                                description:
+                                  'Token required to identify a full_product_name so that it can be referred to from other parts in the document. There is no predefined or required format for the product_id as long as it uniquely identifies a product in the context of the current document.',
+                                metaData: {
+                                  uiType: 'STRING_PRODUCT_ID',
+                                  i18n: {
+                                    title: 'v2_1.ProductIdTitle',
+                                    description: 'v2_1.ProductIdDescription',
+                                  },
+                                  itemName: {
+                                    itemNameTranslationKey:
+                                      'arrays.productsItemName',
+                                  },
+                                  relevanceLevels: {
+                                    csaf_base: 'optional',
+                                    csaf_security_incident_response:
+                                      'want_to_have',
+                                    csaf_informational_advisory: 'excluded',
+                                    csaf_security_advisory: 'optional',
+                                    csaf_vex: 'optional',
+                                  },
+                                },
+                                minLength: 1,
+                                examples: ['CSAFPID-0004', 'CSAFPID-0008'],
+                                metaInfo: {},
+                                type: 'STRING',
+                              },
+                            },
+                          },
+                          {
                             key: 'text',
                             fullName: ['vulnerabilities', 'notes', 'text'],
                             title: 'Note content',
@@ -9064,6 +9641,79 @@ export default {
                                 csaf_informational_advisory: 'excluded',
                                 csaf_security_advisory: 'nice_to_know',
                                 csaf_vex: 'mandatory',
+                              },
+                            },
+                            minLength: 1,
+                            examples: ['CSAFPID-0004', 'CSAFPID-0008'],
+                            metaInfo: {},
+                            type: 'STRING',
+                          },
+                        },
+                      },
+                      {
+                        key: 'unknown',
+                        fullName: [
+                          'vulnerabilities',
+                          'product_status',
+                          'unknown',
+                        ],
+                        title: 'Unknown',
+                        description:
+                          'It is not known whether these versions are or are not affected by the vulnerability. There is also no investigation and therefore the status might never be determined.',
+                        metaData: {
+                          userDocumentation: {
+                            specification:
+                              'docs/user/vulnerabilities/vulnerability/product_status/unknown-spec.en.md',
+                            usage:
+                              'docs/user/vulnerabilities/vulnerability/product_status/unknown-usage.en.md',
+                          },
+                          relevanceLevels: {
+                            csaf_base: 'nice_to_know',
+                            csaf_security_incident_response: 'nice_to_know',
+                            csaf_informational_advisory: 'excluded',
+                            csaf_security_advisory: 'nice_to_know',
+                            csaf_vex: 'optional',
+                          },
+                          i18n: {
+                            title:
+                              'v2_1.VulnerabilitiesItemsProductStatusUnknownTitle',
+                            description:
+                              'v2_1.VulnerabilitiesItemsProductStatusUnknownDescription',
+                          },
+                        },
+                        type: 'ARRAY',
+                        metaInfo: {
+                          arrayType: {
+                            key: '',
+                            fullName: [
+                              'vulnerabilities',
+                              'product_status',
+                              'unknown',
+                            ],
+                            title: 'Reference token for product instance',
+                            description:
+                              'Token required to identify a full_product_name so that it can be referred to from other parts in the document. There is no predefined or required format for the product_id as long as it uniquely identifies a product in the context of the current document.',
+                            metaData: {
+                              uiType: 'STRING_PRODUCT_ID',
+                              userDocumentation: {
+                                specification:
+                                  'docs/user/types/products-spec.en.md',
+                                usage: 'docs/user/types/products-usage.en.md',
+                              },
+                              i18n: {
+                                title: 'v2_1.ProductIdTitle',
+                                description: 'v2_1.ProductIdDescription',
+                              },
+                              itemName: {
+                                itemNameTranslationKey:
+                                  'arrays.productsItemName',
+                              },
+                              relevanceLevels: {
+                                csaf_base: 'nice_to_know',
+                                csaf_security_incident_response: 'nice_to_know',
+                                csaf_informational_advisory: 'excluded',
+                                csaf_security_advisory: 'nice_to_know',
+                                csaf_vex: 'optional',
                               },
                             },
                             minLength: 1,

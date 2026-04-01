@@ -421,6 +421,23 @@ export default {
       description: 'DocumentLangDescription',
     },
   },
+  '$.document.license_expression': {
+    userDocumentation: {
+      specification: 'docs/user/document/license_expression-spec.en.md',
+      usage: 'docs/user/document/license_expression-usage.en.md',
+    },
+    relevanceLevels: {
+      csaf_base: 'nice_to_know',
+      csaf_security_incident_response: 'nice_to_know',
+      csaf_informational_advisory: 'nice_to_know',
+      csaf_security_advisory: 'want_to_have',
+      csaf_vex: 'want_to_have',
+    },
+    i18n: {
+      title: 'DocumentLicenseExpressionTitle',
+      description: 'DocumentLicenseExpressionDescription',
+    },
+  },
   '$.document.notes': {
     userDocumentation: {
       specification: 'docs/user/document/notes-spec.en.md',
@@ -521,6 +538,52 @@ export default {
       title: 'NotesItemsTitleTitle',
       description: 'NotesItemsTitleDescription',
     },
+  },
+  '$.document.notes.group_ids': {
+    relevanceLevels: {
+      csaf_base: 'optional',
+      csaf_security_incident_response: 'nice_to_know',
+      csaf_informational_advisory: 'nice_to_know',
+      csaf_security_advisory: 'nice_to_know',
+      csaf_vex: 'nice_to_know',
+    },
+    i18n: {
+      title: 'ProductGroupsTitle',
+      description: 'ProductGroupsDescription',
+    },
+  },
+  '$.document.notes.group_ids[]': {
+    i18n: {
+      title: 'ProductGroupIdTitle',
+      description: 'ProductGroupIdDescription',
+    },
+    itemName: {
+      itemNameTranslationKey: 'arrays.productGroupIdsItemName',
+    },
+    uiType: 'STRING_GROUP_ID',
+  },
+  '$.document.notes.product_ids': {
+    relevanceLevels: {
+      csaf_base: 'optional',
+      csaf_security_incident_response: 'nice_to_know',
+      csaf_informational_advisory: 'nice_to_know',
+      csaf_security_advisory: 'nice_to_know',
+      csaf_vex: 'nice_to_know',
+    },
+    i18n: {
+      title: 'ProductsTitle',
+      description: 'ProductsDescription',
+    },
+  },
+  '$.document.notes.product_ids[]': {
+    i18n: {
+      title: 'ProductIdTitle',
+      description: 'ProductIdDescription',
+    },
+    itemName: {
+      itemNameTranslationKey: 'arrays.productsItemName',
+    },
+    uiType: 'STRING_PRODUCT_ID',
   },
   '$.document.publisher': {
     userDocumentation: {
@@ -3332,6 +3395,52 @@ export default {
     },
     uiType: 'STRING_PRODUCT_ID',
   },
+  '$.vulnerabilities.first_known_exploitation_dates.group_ids': {
+    relevanceLevels: {
+      csaf_base: 'optional',
+      csaf_security_incident_response: 'optional',
+      csaf_informational_advisory: 'excluded',
+      csaf_security_advisory: 'optional',
+      csaf_vex: 'optional',
+    },
+    i18n: {
+      title: 'ProductGroupsTitle',
+      description: 'ProductGroupsDescription',
+    },
+  },
+  '$.vulnerabilities.first_known_exploitation_dates.group_ids[]': {
+    i18n: {
+      title: 'ProductGroupIdTitle',
+      description: 'ProductGroupIdDescription',
+    },
+    itemName: {
+      itemNameTranslationKey: 'arrays.productGroupIdsItemName',
+    },
+    uiType: 'STRING_GROUP_ID',
+  },
+  '$.vulnerabilities.first_known_exploitation_dates.product_ids': {
+    relevanceLevels: {
+      csaf_base: 'optional',
+      csaf_security_incident_response: 'optional',
+      csaf_informational_advisory: 'excluded',
+      csaf_security_advisory: 'optional',
+      csaf_vex: 'optional',
+    },
+    i18n: {
+      title: 'ProductsTitle',
+      description: 'ProductsDescription',
+    },
+  },
+  '$.vulnerabilities.first_known_exploitation_dates.product_ids[]': {
+    i18n: {
+      title: 'ProductIdTitle',
+      description: 'ProductIdDescription',
+    },
+    itemName: {
+      itemNameTranslationKey: 'arrays.productsItemName',
+    },
+    uiType: 'STRING_PRODUCT_ID',
+  },
   '$.vulnerabilities.ids': {
     userDocumentation: {
       specification: 'docs/user/vulnerabilities/vulnerability/ids-spec.en.md',
@@ -3512,6 +3621,52 @@ export default {
     },
     uiType: 'STRING_MULTI_LINE',
   },
+  '$.vulnerabilities.involvements.group_ids': {
+    relevanceLevels: {
+      csaf_base: 'optional',
+      csaf_security_incident_response: 'nice_to_know',
+      csaf_informational_advisory: 'excluded',
+      csaf_security_advisory: 'nice_to_know',
+      csaf_vex: 'nice_to_know',
+    },
+    i18n: {
+      title: 'ProductGroupsTitle',
+      description: 'ProductGroupsDescription',
+    },
+  },
+  '$.vulnerabilities.involvements.group_ids[]': {
+    i18n: {
+      title: 'ProductGroupIdTitle',
+      description: 'ProductGroupIdDescription',
+    },
+    itemName: {
+      itemNameTranslationKey: 'arrays.productGroupIdsItemName',
+    },
+    uiType: 'STRING_GROUP_ID',
+  },
+  '$.vulnerabilities.involvements.product_ids': {
+    relevanceLevels: {
+      csaf_base: 'optional',
+      csaf_security_incident_response: 'nice_to_know',
+      csaf_informational_advisory: 'excluded',
+      csaf_security_advisory: 'nice_to_know',
+      csaf_vex: 'nice_to_know',
+    },
+    i18n: {
+      title: 'ProductsTitle',
+      description: 'ProductsDescription',
+    },
+  },
+  '$.vulnerabilities.involvements.product_ids[]': {
+    i18n: {
+      title: 'ProductIdTitle',
+      description: 'ProductIdDescription',
+    },
+    itemName: {
+      itemNameTranslationKey: 'arrays.productsItemName',
+    },
+    uiType: 'STRING_PRODUCT_ID',
+  },
   '$.vulnerabilities.notes': {
     userDocumentation: {
       specification: 'docs/user/vulnerabilities/vulnerability/notes-spec.en.md',
@@ -3611,6 +3766,52 @@ export default {
       title: 'NotesItemsTitleTitle',
       description: 'NotesItemsTitleDescription',
     },
+  },
+  '$.vulnerabilities.notes.group_ids': {
+    relevanceLevels: {
+      csaf_base: 'optional',
+      csaf_security_incident_response: 'want_to_have',
+      csaf_informational_advisory: 'excluded',
+      csaf_security_advisory: 'optional',
+      csaf_vex: 'optional',
+    },
+    i18n: {
+      title: 'ProductGroupsTitle',
+      description: 'ProductGroupsDescription',
+    },
+  },
+  '$.vulnerabilities.notes.group_ids[]': {
+    i18n: {
+      title: 'ProductGroupIdTitle',
+      description: 'ProductGroupIdDescription',
+    },
+    itemName: {
+      itemNameTranslationKey: 'arrays.productGroupIdsItemName',
+    },
+    uiType: 'STRING_GROUP_ID',
+  },
+  '$.vulnerabilities.notes.product_ids': {
+    relevanceLevels: {
+      csaf_base: 'optional',
+      csaf_security_incident_response: 'want_to_have',
+      csaf_informational_advisory: 'excluded',
+      csaf_security_advisory: 'optional',
+      csaf_vex: 'optional',
+    },
+    i18n: {
+      title: 'ProductsTitle',
+      description: 'ProductsDescription',
+    },
+  },
+  '$.vulnerabilities.notes.product_ids[]': {
+    i18n: {
+      title: 'ProductIdTitle',
+      description: 'ProductIdDescription',
+    },
+    itemName: {
+      itemNameTranslationKey: 'arrays.productsItemName',
+    },
+    uiType: 'STRING_PRODUCT_ID',
   },
   '$.vulnerabilities.product_status': {
     userDocumentation: {
@@ -3863,6 +4064,36 @@ export default {
     },
   },
   '$.vulnerabilities.product_status.under_investigation[]': {
+    userDocumentation: {
+      specification: 'docs/user/types/products-spec.en.md',
+      usage: 'docs/user/types/products-usage.en.md',
+    },
+    i18n: { title: 'ProductIdTitle', description: 'ProductIdDescription' },
+    uiType: 'STRING_PRODUCT_ID',
+    itemName: {
+      itemNameTranslationKey: 'arrays.productsItemName',
+    },
+  },
+  '$.vulnerabilities.product_status.unknown': {
+    userDocumentation: {
+      specification:
+        'docs/user/vulnerabilities/vulnerability/product_status/unknown-spec.en.md',
+      usage:
+        'docs/user/vulnerabilities/vulnerability/product_status/unknown-usage.en.md',
+    },
+    relevanceLevels: {
+      csaf_base: 'nice_to_know',
+      csaf_security_incident_response: 'nice_to_know',
+      csaf_informational_advisory: 'excluded',
+      csaf_security_advisory: 'nice_to_know',
+      csaf_vex: 'optional',
+    },
+    i18n: {
+      title: 'VulnerabilitiesItemsProductStatusUnknownTitle',
+      description: 'VulnerabilitiesItemsProductStatusUnknownDescription',
+    },
+  },
+  '$.vulnerabilities.product_status.unknown[]': {
     userDocumentation: {
       specification: 'docs/user/types/products-spec.en.md',
       usage: 'docs/user/types/products-usage.en.md',
