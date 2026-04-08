@@ -6,9 +6,10 @@ export default React.forwardRef(
    * @param {{
    *   onConfirm(): void
    *   onClose(): void
+   *   context?: 'manual' | 'file-open'
    * }} props
    */
-  ({ onConfirm, onClose }, ref) => {
+  ({ onConfirm, onClose, context = 'manual' }, ref) => {
     return (
       <dialog
         className="rounded p-0 w-full max-w-lg shadow"
@@ -37,7 +38,11 @@ export default React.forwardRef(
           </button>
         </header>
         <div className="p-4">
-          <p>{t('betaVersionModal.warningText')}</p>
+          <p>
+            {context === 'file-open'
+              ? t('betaVersionModal.warningTextFileOpen')
+              : t('betaVersionModal.warningText')}
+          </p>
         </div>
         <footer className="p-2 border-t flex justify-between items-center">
           <button

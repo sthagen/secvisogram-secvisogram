@@ -74,6 +74,9 @@ function View({
   onGetTemplateContent,
   onGetBackendInfo,
   onSetUiVersion,
+  pendingBeta21Doc,
+  onConfirmBeta21Open,
+  onCancelBeta21Open,
   ...props
 }) {
   const appConfig = React.useContext(AppConfigContext)
@@ -130,6 +133,24 @@ function View({
       betaVersionDialogRef.current?.showModal()
     }
   }, [betaVersionDialog])
+
+  React.useEffect(() => {
+    if (!pendingBeta21Doc) return
+    setBetaVersionDialog(
+      <BetaVersionConfirmationDialog
+        ref={betaVersionDialogRef}
+        context="file-open"
+        onConfirm={() => {
+          onConfirmBeta21Open()
+          setBetaVersionDialog(null)
+        }}
+        onClose={() => {
+          onCancelBeta21Open()
+          setBetaVersionDialog(null)
+        }}
+      />,
+    )
+  }, [pendingBeta21Doc, onConfirmBeta21Open, onCancelBeta21Open])
 
   const [advisoryState, setAdvisoryState] = React.useState(
     /** @type {import('./shared/types.js').AdvisoryState | null} */ (
