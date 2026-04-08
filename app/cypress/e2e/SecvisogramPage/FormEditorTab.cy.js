@@ -282,13 +282,20 @@ describe('SecvisogramPage / FormEditor Tab', function () {
   })
 
   it('shows errors in sidebar according to selected path', function () {
-    cy.intercept(
-      '/.well-known/appspecific/de.bsi.secvisogram.json',
-      getLoginEnabledConfig(),
-    ).as('wellKnownAppConfig')
+    cy.intercept('/.well-known/appspecific/de.bsi.secvisogram.json', {
+      statusCode: 404,
+      body: {},
+    }).as('wellKnownAppConfig')
 
     cy.visit('?tab=EDITOR')
     cy.wait('@wellKnownAppConfig')
+
+    cy.get('#csafVersionSelect').select('v2.1')
+    cy.get('[data-testid="beta_version-confirm_button"]').click()
+
+    cy.get('[data-testid="new_document_button"]').click()
+    cy.get('[data-testid="new_document-templates-select"]').select('MINIMAL')
+    cy.get('[data-testid="new_document-create_document_button"]').click()
 
     cy.get(`[data-testid="document-tracking-infoButton"]`).click()
 
@@ -302,7 +309,9 @@ describe('SecvisogramPage / FormEditor Tab', function () {
     cy.get(`[data-testid="document-tracking-version-infoButton"]`).click()
 
     // there should be one error card for /document/tracking/version when it does not match the expected regex
-    cy.get(`[data-testid="error-cards"] div`).should('have.length', 1)
+    cy.get(`[data-testid="error-cards"] div`)
+      .should('have.length', 1)
+      .should('have.class', 'border-red-800')
     cy.get(`[data-testid="error_card-/document/tracking/version-0"]`).should(
       'exist',
     )

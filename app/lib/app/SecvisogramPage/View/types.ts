@@ -28,6 +28,7 @@ export interface Props {
   } | null
   stripResult: React.ComponentProps<typeof CsafTab>['stripResult']
   previewResult: React.ComponentProps<typeof PreviewTab>['previewResult']
+  pendingBeta21Doc: { document?: { csaf_version?: string } } | null
   DocumentsTab: React.ComponentType<{
     onOpenAdvisory(
       params: {
@@ -89,4 +90,6 @@ export interface Props {
   onGetTemplateContent(params: { templateId: string }): Promise<{}>
   onGetBackendInfo(): Promise<{ version: string }>
   onSetUiVersion(uiSchemaVersion: UiSchemaVersion): void
+  onConfirmBeta21Open(): void
+  onCancelBeta21Open(): void
 }

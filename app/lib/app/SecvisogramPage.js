@@ -29,6 +29,7 @@ const SecvisogramPage = () => {
       stripResult,
       previewResult,
       uiSchemaVersion,
+      pendingBeta21Doc,
     },
     setState,
   ] = React.useState({
@@ -61,7 +62,9 @@ const SecvisogramPage = () => {
     ),
     isTabLocked: false,
     /** @type {import('../uiSchemas.js').UiSchemaVersion} */
-    uiSchemaVersion: 'v2.1',
+    uiSchemaVersion: 'v2.0',
+    /** @type {{ document?: { csaf_version?: string } } | null} */
+    pendingBeta21Doc: null,
   })
   const core = coreRecord[uiSchemaVersion]
   const [doc, setDoc] = React.useState(core.newDocMin())
@@ -160,11 +163,27 @@ const SecvisogramPage = () => {
               const parsedDoc = JSON.parse(
                 /** @type {string | undefined} */ (e.target?.result) ?? '',
               )
-              setState((state) => ({
-                ...state,
-                isLoading: false,
-              }))
-              setDoc(parsedDoc)
+              const detectedVersion = parsedDoc?.document?.csaf_version
+
+              if (detectedVersion === '2.1' && uiSchemaVersion !== 'v2.1') {
+                // When opening a csaf document we first check the version.
+                // Since the csaf 2.1 functionality is still beta we warn the
+                // user before opening a document with that version ...
+
+                setState((state) => ({
+                  ...state,
+                  isLoading: false,
+                  pendingBeta21Doc: parsedDoc,
+                }))
+              } else {
+                // ... otherwise we just proceed loading the file
+
+                setState((state) => ({
+                  ...state,
+                  isLoading: false,
+                }))
+                setDoc(parsedDoc)
+              }
               resolve(parsedDoc)
             } catch (err) {
               reject(err)
@@ -362,6 +381,23 @@ const SecvisogramPage = () => {
       onSetUiVersion={(uiSchemaVersion) => {
         setState((state) => ({ ...state, uiSchemaVersion }))
       }}
+      pendingBeta21Doc={pendingBeta21Doc}
+      onConfirmBeta21Open={React.useCallback(() => {
+        if (!pendingBeta21Doc) return
+
+        // If the user accepts opening a csaf 2.1 document despite being beta we
+        // switch to the new mode and load the document from the
+        // `pendingBeta21Doc` state.
+        setState((state) => ({
+          ...state,
+          uiSchemaVersion: 'v2.1',
+          pendingBeta21Doc: null,
+        }))
+        setDoc(pendingBeta21Doc)
+      }, [pendingBeta21Doc, setState, setDoc])}
+      onCancelBeta21Open={React.useCallback(() => {
+        setState((state) => ({ ...state, pendingBeta21Doc: null }))
+      }, [setState])}
     />
   )
 }

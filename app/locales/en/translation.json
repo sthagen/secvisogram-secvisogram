@@ -97,6 +97,12 @@
     "legacyVersion": "Legacy Version",
     "submit": "Submit"
   },
+  "betaVersionModal": {
+    "title": "CSAF 2.1 Beta",
+    "warningText": "CSAF 2.1 support is currently in beta and not ready for production use. Features may be incomplete or subject to change. Do you want to proceed?",
+    "warningTextFileOpen": "The document you opened uses CSAF 2.1, which is currently in beta and not ready for production use. Switch to CSAF 2.1 (Beta) mode to open it?",
+    "proceed": "Switch to v2.1 (Beta)"
+  },
   "sidebar": {
     "contextSpecificErrors": "Context specific Errors",
     "allErrors": "All errors:",
