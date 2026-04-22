@@ -161,6 +161,7 @@ function View({
     ),
   )
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setAdvisoryState((state) =>
       data
         ? { type: 'NEW_ADVISORY', csaf: /** @type {{}} */ (data.doc) }
@@ -170,6 +171,7 @@ function View({
 
   const [isLoading, setLoading] = React.useState(props.isLoading)
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(props.isLoading)
   }, [props.isLoading])
 
@@ -181,6 +183,7 @@ function View({
     ),
   )
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setErrors(props.errors)
   }, [props.errors])
 
@@ -190,6 +193,7 @@ function View({
     ),
   )
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setAlert(props.alert ? <Alert {...props.alert} /> : null)
   }, [props.alert])
 
@@ -232,6 +236,7 @@ function View({
   )
   React.useEffect(() => {
     if (applicationError instanceof BackendUnavailableError) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setToast({
         message: backendNotAvailableTryAgain,
       })
