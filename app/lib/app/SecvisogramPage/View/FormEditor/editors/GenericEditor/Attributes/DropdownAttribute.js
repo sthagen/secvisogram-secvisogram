@@ -60,6 +60,7 @@ export default function DropdownAttribute({
   const [inputValue, setInputValue] = React.useState(persistedValue)
 
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setInputValue(persistedValue)
   }, [persistedValue])
 

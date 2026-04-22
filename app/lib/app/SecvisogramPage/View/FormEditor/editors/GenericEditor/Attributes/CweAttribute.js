@@ -162,6 +162,7 @@ function CwecId({
   }
 
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setInputValue(/** @type {string} */ (value))
   }, [value])
 
@@ -289,6 +290,7 @@ function CwecName({
   }
 
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setInputValue(/** @type string */ (value))
   }, [value])
 

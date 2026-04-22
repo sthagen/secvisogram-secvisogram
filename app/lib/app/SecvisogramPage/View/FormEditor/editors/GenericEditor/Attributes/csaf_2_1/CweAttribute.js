@@ -64,6 +64,7 @@ export default function CweAttribute({ property, instancePath, disabled }) {
   )
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setVersionTerm(String(versionValue))
   }, [versionValue])
 
@@ -191,6 +192,7 @@ function CwecVersion({
   }
 
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setInputValue(/** @type string */ (value))
     if (value !== term) {
       setTerm('')
@@ -311,6 +313,7 @@ function CwecId({
   }
 
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setInputValue(/** @type {string} */ (value))
     setTerm('')
   }, [value])
@@ -407,6 +410,7 @@ function CwecName({
   }
 
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setInputValue(/** @type string */ (value))
     setTerm('')
   }, [value])
