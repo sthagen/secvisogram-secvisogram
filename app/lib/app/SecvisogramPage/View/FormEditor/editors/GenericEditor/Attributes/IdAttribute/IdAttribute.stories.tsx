@@ -55,6 +55,7 @@ const meta = {
               ])
             },
           },
+          uiSchemaVersion: 'v2.0',
           errors: [],
           replaceDoc,
           updateDoc,
