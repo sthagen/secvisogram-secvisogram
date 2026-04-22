@@ -19,7 +19,7 @@ import CVSSV3Attribute from './GenericEditor/Attributes/CVSS3Attribute.js'
 import CweAttribute from './GenericEditor/Attributes/CweAttribute.js'
 import DateAttribute from './GenericEditor/Attributes/DateAttribute.js'
 import DropdownAttribute from './GenericEditor/Attributes/DropdownAttribute.js'
-import IdAttribute from './GenericEditor/Attributes/IdAttribute.js'
+import IdAttribute from './GenericEditor/Attributes/IdAttribute/IdAttribute.js'
 import Attribute from './GenericEditor/Attributes/shared/Attribute.js'
 import TextAreaAttribute from './GenericEditor/Attributes/TextAreaAttribute.js'
 import TextAttribute from './GenericEditor/Attributes/TextAttribute.js'
@@ -204,7 +204,7 @@ export default function Editor({
           label={label}
           description={description}
           options={/** @type {string[]} */ (property.enum || [])}
-          isEnum={false}
+          isEnum={true}
           instancePath={instancePath}
           value={value || ''}
           property={property}
