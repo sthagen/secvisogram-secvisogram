@@ -726,6 +726,18 @@ test.describe('SecvisogramPage', () => {
           await page
             .getByTestId('export_document-export_document_button')
             .click()
+
+          // Fire the load event manually via the test runner
+          // This forces the application's iframeWindow.onload callback to execute
+          await page.evaluate(() => {
+            const iframe = document.querySelector(
+              '[data-testid="pdf_document_iframe"]',
+            ) as HTMLIFrameElement
+            if (iframe?.contentWindow) {
+              iframe.contentWindow.dispatchEvent(new Event('load'))
+            }
+          })
+
           const printCalled = await page.evaluate(() => {
             const iframe = document.querySelector(
               '[data-testid="pdf_document_iframe"]',
@@ -778,6 +790,91 @@ test.describe('SecvisogramPage', () => {
         const newWidth = await page.evaluate(() => document.body.scrollWidth)
         expect(newWidth).toBe(initialWidth)
       })
+    })
+  })
+
+  test.describe('validate UTF-8 encoding for new document from filesystem', () => {
+    test('accepts valid UTF-8 encoded JSON', async ({ page }) => {
+      await page.route(
+        '/.well-known/appspecific/de.bsi.secvisogram.json',
+        (route) => route.fulfill({ status: 404, json: {} }),
+      )
+
+      await page.goto('?tab=EDITOR')
+      await page.locator('#csafVersionSelect').selectOption('v2.0')
+
+      await page.getByTestId('new_document_button').click()
+      await page.getByTestId('new_document-file_selector_button').click()
+      await page.getByTestId('new_document-file_input').setInputFiles({
+        name: 'some_file.json',
+        mimeType: 'application/json',
+        buffer: Buffer.from(JSON.stringify(sampleUploadDocument)),
+      })
+
+      await page.getByTestId('new_document-create_document_button').click()
+      await expect(page.getByTestId('new_document_dialog')).toBeHidden()
+      await page.getByTestId('menu_entry-/document').click()
+      await expect(
+        page.getByTestId('attribute-document-title').locator('input'),
+      ).toHaveValue((sampleUploadDocument as any).document.title)
+    })
+
+    test('accepts valid UTF-8 encoded JSON with Byte Order Mark (BOM)', async ({
+      page,
+    }) => {
+      await page.route(
+        '/.well-known/appspecific/de.bsi.secvisogram.json',
+        (route) => route.fulfill({ status: 404, json: {} }),
+      )
+
+      await page.goto('?tab=EDITOR')
+      await page.locator('#csafVersionSelect').selectOption('v2.0')
+
+      await page.getByTestId('new_document_button').click()
+      await page.getByTestId('new_document-file_selector_button').click()
+      await page.getByTestId('new_document-file_input').setInputFiles({
+        name: 'some_file.json',
+        mimeType: 'application/json',
+        buffer: Buffer.from(`\uFEFF${JSON.stringify(sampleUploadDocument)}`),
+      })
+
+      await page.getByTestId('new_document-create_document_button').click()
+      await expect(page.getByTestId('new_document_dialog')).toBeHidden()
+      await page.getByTestId('menu_entry-/document').click()
+      await expect(
+        page.getByTestId('attribute-document-title').locator('input'),
+      ).toHaveValue((sampleUploadDocument as any).document.title)
+    })
+
+    test('deny invalid UTF-8 encoded JSON', async ({ page }) => {
+      await page.route(
+        '/.well-known/appspecific/de.bsi.secvisogram.json',
+        (route) => route.fulfill({ status: 404, json: {} }),
+      )
+
+      await page.goto('?tab=EDITOR')
+      await page.locator('#csafVersionSelect').selectOption('v2.0')
+
+      await page.getByTestId('new_document_button').click()
+      await page.getByTestId('new_document-file_selector_button').click()
+      await page.getByTestId('new_document-file_input').setInputFiles({
+        name: 'some_file.json',
+        mimeType: 'application/json',
+        buffer: Buffer.from(
+          new Uint8Array([
+            // '{"csaf":"0xC3"}'
+            0x7b, 0x22, 0x63, 0x73, 0x61, 0x66, 0x22, 0x3a, 0x22, 0xc3, 0x22,
+            0x7d,
+          ]),
+        ),
+      })
+
+      await page.getByTestId('new_document-create_document_button').click()
+      await expect(page.getByTestId('new_document_dialog')).toBeHidden()
+      await page.getByTestId('menu_entry-/document').click()
+      await expect(page.getByTestId('error_toast_message')).toHaveText(
+        'Invalid UTF-8 encoding',
+      )
     })
   })
 })

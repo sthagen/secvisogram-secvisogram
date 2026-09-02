@@ -11,6 +11,7 @@ import AppErrorContext from './shared/context/AppErrorContext.js'
 import HistoryContext from './shared/context/HistoryContext.js'
 import downloadFile from './shared/download.js'
 import sitemap from './shared/sitemap.js'
+import sortObjectKeys from './shared/sortObjectKeys.js'
 
 /**
  * Holds the application-state and provides memoized callbacks for the view
@@ -163,37 +164,56 @@ const SecvisogramPage = () => {
           fileReader.onerror = reject
           fileReader.onload = (e) => {
             try {
-              const parsedDoc = JSON.parse(
-                /** @type {string | undefined} */ (e.target?.result) ?? '',
-              )
-              const detectedVersion = parsedDoc?.document?.csaf_version
+              if (
+                e.target &&
+                e.target.result &&
+                typeof e.target.result !== 'string'
+              ) {
+                const arrayBuffer = e.target.result
+                // 'fatal: true' forces the decoder, to throw error if invalid UTF-8 is detected
+                const decoder = new TextDecoder('utf-8', { fatal: true })
+                const jsonString = decoder.decode(new Uint8Array(arrayBuffer))
+                // Remove possible Byte Order Mark (BOM) and parse text
+                const cleanText = jsonString.replace(/^\uFEFF/, '')
+                const parsedDoc = JSON.parse(cleanText)
 
-              if (detectedVersion === '2.1' && uiSchemaVersion !== 'v2.1') {
-                // When opening a csaf document we first check the version.
-                // Since the csaf 2.1 functionality is still beta we warn the
-                // user before opening a document with that version ...
+                const detectedVersion = parsedDoc?.document?.csaf_version
 
-                setState((state) => ({
-                  ...state,
-                  isLoading: false,
-                  pendingBeta21Doc: parsedDoc,
-                }))
+                if (detectedVersion === '2.1' && uiSchemaVersion !== 'v2.1') {
+                  // When opening a csaf document we first check the version.
+                  // Since the csaf 2.1 functionality is still beta we warn the
+                  // user before opening a document with that version ...
+
+                  setState((state) => ({
+                    ...state,
+                    isLoading: false,
+                    pendingBeta21Doc: parsedDoc,
+                  }))
+                } else {
+                  // ... otherwise we just proceed loading the file
+
+                  setState((state) => ({
+                    ...state,
+                    isLoading: false,
+                  }))
+                  setDoc(parsedDoc)
+                }
+                resolve(parsedDoc)
               } else {
-                // ... otherwise we just proceed loading the file
-
-                setState((state) => ({
-                  ...state,
-                  isLoading: false,
-                }))
-                setDoc(parsedDoc)
+                reject(new Error('Failed to read file'))
               }
-              resolve(parsedDoc)
             } catch (err) {
+              if (err instanceof TypeError) {
+                reject(new Error('Invalid UTF-8 encoding'))
+              }
               reject(err)
             }
           }
-          fileReader.readAsText(file)
-        }).catch(handleError)
+          fileReader.readAsArrayBuffer(file)
+        }).catch((err) => {
+          setState((state) => ({ ...state, isLoading: false }))
+          handleError(err)
+        })
       }}
       onChangeTab={(tab, document) => {
         if (isTabLocked) return
@@ -247,10 +267,16 @@ const SecvisogramPage = () => {
         [handleError, core],
       )}
       onGetDocMin={async () => {
-        return core.newDocMin()
+        const newDocMin = await core.newDocMin()
+        return /** @type {{}} */ (
+          sortObjectKeys(new Intl.Collator(), newDocMin)
+        )
       }}
       onGetDocMax={async () => {
-        return core.newDocMax()
+        const newDocMax = await core.newDocMax()
+        return /** @type {{}} */ (
+          sortObjectKeys(new Intl.Collator(), newDocMax)
+        )
       }}
       onCreateAdvisory={({ csaf, summary, legacyVersion }) => {
         return backend.createAdvisory({ csaf, summary, legacyVersion })
