@@ -218,8 +218,8 @@ function CwecVersion({
             freeSolo
             forcePopupIcon={false}
             options={results ?? []}
-            renderOption={(props, option) => (
-              <li {...props} key={option}>
+            renderOption={({ key: _key, ...props }, option) => (
+              <li key={option} {...props}>
                 {option}
               </li>
             )}
@@ -337,8 +337,8 @@ function CwecId({
             freeSolo
             forcePopupIcon={false}
             options={results?.map((cwe) => cwe.id) ?? []}
-            renderOption={(props, option) => (
-              <li {...props} key={option}>
+            renderOption={({ key: _key, ...props }, option) => (
+              <li key={option} {...props}>
                 {displayIdAndName(option)}
               </li>
             )}
@@ -439,8 +439,8 @@ function CwecName({
             autoHighlight
             forcePopupIcon={false}
             options={results?.map((cwe) => cwe.name) ?? []}
-            renderOption={(props, option) => (
-              <li {...props} key={option}>
+            renderOption={({ key: _key, ...props }, option) => (
+              <li key={option} {...props}>
                 {displayIdAndName(option)}
               </li>
             )}

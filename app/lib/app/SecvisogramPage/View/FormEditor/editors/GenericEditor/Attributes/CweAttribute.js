@@ -185,8 +185,8 @@ function CwecId({
             freeSolo
             forcePopupIcon={false}
             options={cwec.weaknesses.map((cwe) => cwe.id)}
-            renderOption={(props, option) => (
-              <li {...props} key={option}>
+            renderOption={({ key: _key, ...props }, option) => (
+              <li key={option} {...props}>
                 {displayIdAndName(option)}
               </li>
             )}
@@ -313,8 +313,8 @@ function CwecName({
             freeSolo
             forcePopupIcon={false}
             options={cwec.weaknesses.map((cwe) => cwe.name)}
-            renderOption={(props, option) => (
-              <li {...props} key={option}>
+            renderOption={({ key: _key, ...props }, option) => (
+              <li key={option} {...props}>
                 {displayIdAndName(option)}
               </li>
             )}
