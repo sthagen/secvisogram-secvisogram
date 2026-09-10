@@ -1,4 +1,5 @@
 import React from 'react'
+import { Checkbox } from '@mui/material'
 import DocumentEditorContext from '../../../../shared/DocumentEditorContext.js'
 import Attribute from './shared/Attribute.js'
 
@@ -23,10 +24,15 @@ export default function CheckboxAttribute({
   const { updateDoc } = React.useContext(DocumentEditorContext)
   return (
     <Attribute disabled={disabled} {...props}>
-      <input
-        className="w-[30px] h-[30px] border border-gray-400 py-1 px-2 shadow-inner rounded"
+      <Checkbox
+        sx={{
+          // Unchecked color
+          color: '#000000',
+          '&.Mui-checked': {
+            color: '#000000',
+          },
+        }}
         checked={value}
-        type={'checkbox'}
         required={required}
         onChange={() => {
           updateDoc(props.instancePath, !value)
