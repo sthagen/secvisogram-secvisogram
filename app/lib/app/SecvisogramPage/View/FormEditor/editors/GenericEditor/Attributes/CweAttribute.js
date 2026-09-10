@@ -112,6 +112,13 @@ function CwecId({
   const [inputValue, setInputValue] = React.useState(
     /** @type {string} */ (value),
   )
+  // Keeps the displayed text in sync whenever the underlying value changes
+  // from the outside (e.g. undo/redo, loading a different document).
+  const [prevValue, setPrevValue] = React.useState(value)
+  if (value !== prevValue) {
+    setPrevValue(value)
+    setInputValue(/** @type {string} */ (value))
+  }
 
   const handleChange = (
     /** @type {React.SyntheticEvent<Element, Event>} */ _event,
@@ -160,11 +167,6 @@ function CwecId({
     const name = cweById.get(id)?.name
     return `${id}, ${name}`
   }
-
-  React.useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setInputValue(/** @type {string} */ (value))
-  }, [value])
 
   return (
     <Attribute
@@ -240,6 +242,13 @@ function CwecName({
   const [inputValue, setInputValue] = React.useState(
     /** @type {string} */ (value),
   )
+  // Keeps the displayed text in sync whenever the underlying value changes
+  // from the outside (e.g. undo/redo, loading a different document).
+  const [prevValue, setPrevValue] = React.useState(value)
+  if (value !== prevValue) {
+    setPrevValue(value)
+    setInputValue(/** @type {string} */ (value))
+  }
 
   const handleChange = (
     /** @type {React.SyntheticEvent<Element, Event>} */ _event,
@@ -288,11 +297,6 @@ function CwecName({
     const id = cweByName.get(name)?.id
     return `${id}, ${name}`
   }
-
-  React.useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setInputValue(/** @type string */ (value))
-  }, [value])
 
   return (
     <Attribute

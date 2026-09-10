@@ -26,7 +26,7 @@ export default function DocumentsTabView({
     /** @type {React.ComponentProps<typeof Alert> | null} */ (null),
   )
   const [data, setData] = React.useState(defaultData)
-  const [isLoading, setLoading] = React.useState(!defaultData)
+  const [isLoading, setLoading] = React.useState(true)
 
   const [editWorkflowStateDialogProps, setEditWorkflowStateDialogProps] =
     React.useState(
@@ -45,8 +45,6 @@ export default function DocumentsTabView({
   React.useEffect(() => {
     let active = true
 
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setLoading(true)
     onGetData()
       .then((data) => {
         if (!active) return
