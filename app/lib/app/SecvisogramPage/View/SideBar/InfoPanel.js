@@ -107,11 +107,10 @@ export default function InfoPanel({ selectedPath, uiSchemaVersion }) {
           h5: 'strong',
           h6: 'strong',
           a: ({ href, children }) => {
-            const linkText = children[0]
             if (href?.startsWith('http')) {
               return (
                 <a href={href} target="_blank" rel="noreferrer">
-                  {linkText}
+                  {children}
                 </a>
               )
             }
@@ -120,7 +119,7 @@ export default function InfoPanel({ selectedPath, uiSchemaVersion }) {
                 className="cursor-pointer"
                 onClick={() => updateMarkdownText('/docs/user/' + href)}
               >
-                {linkText}
+                {children}
               </a>
             )
           },

@@ -35,7 +35,7 @@ export default function DocumentsTabView({
       ),
     )
   /** @type {React.MutableRefObject<any>} */
-  const editWorkflowStateDialogRef = React.useRef()
+  const editWorkflowStateDialogRef = React.useRef(undefined)
   React.useEffect(() => {
     if (editWorkflowStateDialogProps) {
       editWorkflowStateDialogRef.current.showModal()

@@ -87,7 +87,7 @@ function View({
   const sortButtonRef = React.useRef(null)
 
   const [newDocumentDialog, setNewDocumentDialog] = React.useState(
-    /** @type {JSX.Element | null} */ (null),
+    /** @type {React.JSX.Element | null} */ (null),
   )
   const newDocumentDialogRef = React.useRef(
     /** @type {HTMLDialogElement | null} */ (null),
@@ -103,11 +103,11 @@ function View({
   }, [newDocumentDialog])
 
   const [newExportDocumentDialog, setNewExportDocumentDialog] = React.useState(
-    /** @type {JSX.Element | null} */ (null),
+    /** @type {React.JSX.Element | null} */ (null),
   )
 
   const [versionSummaryDialog, setVersionSummaryDialog] = React.useState(
-    /** @type {JSX.Element | null} */ (null),
+    /** @type {React.JSX.Element | null} */ (null),
   )
   const versionSummaryDialogRef = React.useRef(
     /** @type {HTMLDialogElement | null} */ (null),
@@ -120,11 +120,11 @@ function View({
   }, [versionSummaryDialog])
 
   const [aboutDialog, setAboutDialog] = React.useState(
-    /** @type {JSX.Element | null} */ (null),
+    /** @type {React.JSX.Element | null} */ (null),
   )
 
   const [manualBetaVersionDialog, setBetaVersionDialog] = React.useState(
-    /** @type {JSX.Element | null} */ (null),
+    /** @type {React.JSX.Element | null} */ (null),
   )
   const betaVersionDialogRef = React.useRef(
     /** @type {HTMLDialogElement | null} */ (null),
@@ -224,7 +224,7 @@ function View({
    * directly from `props.alert`.
    */
   const [manualAlert, setAlert] = React.useState(
-    /** @type {JSX.Element | null} */ (null),
+    /** @type {React.JSX.Element | null} */ (null),
   )
   const alert = manualAlert ?? (props.alert ? <Alert {...props.alert} /> : null)
 

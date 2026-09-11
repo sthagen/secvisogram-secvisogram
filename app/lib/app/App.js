@@ -10,7 +10,7 @@ import UserInfoContext from './shared/context/UserInfoContext.js'
 
 /**
  * @param {object} props
- * @param {JSX.Element} props.secvisogramPage
+ * @param {React.JSX.Element} props.secvisogramPage
  * @returns
  */
 export default function App({ secvisogramPage }) {

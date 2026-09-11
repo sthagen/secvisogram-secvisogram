@@ -55,7 +55,7 @@ export default function IdAttribute({ onCollectIds, ...props }) {
       renderOption={({ key: _key, ...props }, option) => {
         const o = /** @type {string} */ (option)
         return (
-          <li key={o} {...props} >
+          <li key={o} {...props}>
             {displayIdAndName(o)}
           </li>
         )
