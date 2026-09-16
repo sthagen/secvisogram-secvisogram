@@ -37,6 +37,37 @@ const getChildProps = (
 ) => property.metaInfo.propertyList?.find((p) => p.key === childKey)
 
 /**
+ * Creates an onKeyDown handler that selects the first option matching the
+ * current input value when the user presses Enter.
+ *
+ * MUI's Autocomplete no longer selects the auto-highlighted (first) option
+ * on Enter when freeSolo is set, since it can't tell that apart from the
+ * user wanting to commit their typed text as-is. This restores the
+ * previous behavior of always selecting the first matching suggestion on
+ * Enter.
+ *
+ * @param {() => string} getInputValue
+ * @param {(value: string) => void} onSelect
+ * @param {(typedValue: string) => string | undefined} findFirstMatch
+ */
+function createEnterKeyDownHandler(getInputValue, onSelect, findFirstMatch) {
+  return (/** @type {React.KeyboardEvent<HTMLDivElement>} */ event) => {
+    if (event.key !== 'Enter') {
+      return
+    }
+    const typedValue = getInputValue().trim().toLowerCase()
+    if (!typedValue) {
+      return
+    }
+    const firstMatch = findFirstMatch(typedValue)
+    if (firstMatch) {
+      event.defaultMuiPrevented = true
+      onSelect(firstMatch)
+    }
+  }
+}
+
+/**
  * Custom attribute for CWE.
  *
  * @param {{
@@ -127,10 +158,7 @@ function CwecId({
     setInputValue(newValue)
   }
 
-  const handleSelect = (
-    /** @type {React.SyntheticEvent<Element, Event>} */ _event,
-    /** @type {string} */ id,
-  ) => {
+  const handleSelect = (/** @type {string} */ id) => {
     const weakness = cweById.get(id)
     if (!weakness) {
       // This case should not occur in practice since the dropdown only provides
@@ -161,6 +189,15 @@ function CwecId({
     setInputValue(weakness.id)
     onChange({ id: weakness.id, name: weakness.name })
   }
+
+  const handleKeyDown = createEnterKeyDownHandler(
+    () => inputValue,
+    handleSelect,
+    (typedId) =>
+      cwec.weaknesses.find((weakness) =>
+        weakness.id.toLowerCase().includes(typedId),
+      )?.id,
+  )
 
   const displayIdAndName = (/** @type {string} */ id) => {
     if (!id) return ''
@@ -200,18 +237,22 @@ function CwecId({
                 placeholder="^CWE-[1-9]\d{0,5}$"
                 size="small"
                 onBlur={handleBlur}
-                inputProps={{
-                  ...params.inputProps,
-                  pattern: '^CWE-[1-9]\\d{0,5}$',
+                slotProps={{
+                  ...params.slotProps,
+                  htmlInput: {
+                    ...params.slotProps.htmlInput,
+                    pattern: '^CWE-[1-9]\\d{0,5}$',
+                  },
                 }}
               />
             )}
             onInputChange={(event, newInputValue) => {
               handleChange(event, newInputValue)
             }}
-            onChange={(event, id) => {
-              handleSelect(event, id)
+            onChange={(_event, id) => {
+              handleSelect(id)
             }}
+            onKeyDown={handleKeyDown}
           />
         </div>
       </div>
@@ -257,10 +298,7 @@ function CwecName({
     setInputValue(newValue)
   }
 
-  const handleSelect = (
-    /** @type {React.SyntheticEvent<Element, Event>} */ _event,
-    /** @type {string} */ name,
-  ) => {
+  const handleSelect = (/** @type {string} */ name) => {
     const weakness = cweByName.get(name)
     if (!weakness) {
       // This case should not occur in practice since the dropdown only provides
@@ -291,6 +329,15 @@ function CwecName({
     setInputValue(weakness.name)
     onChange({ id: weakness.id, name: weakness.name })
   }
+
+  const handleKeyDown = createEnterKeyDownHandler(
+    () => inputValue,
+    handleSelect,
+    (typedName) =>
+      cwec.weaknesses.find((weakness) =>
+        weakness.name.toLowerCase().includes(typedName),
+      )?.name,
+  )
 
   const displayIdAndName = (/** @type string */ name) => {
     if (!name) return ''
@@ -335,9 +382,10 @@ function CwecName({
             onInputChange={(event, newInputValue) => {
               handleChange(event, newInputValue)
             }}
-            onChange={(event, name) => {
-              handleSelect(event, name)
+            onChange={(_event, name) => {
+              handleSelect(name)
             }}
+            onKeyDown={handleKeyDown}
             isOptionEqualToValue={(option, value) =>
               option === value || value === ''
             }
