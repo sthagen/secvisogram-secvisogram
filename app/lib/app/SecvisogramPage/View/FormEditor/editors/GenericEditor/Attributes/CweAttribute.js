@@ -61,7 +61,10 @@ function createEnterKeyDownHandler(getInputValue, onSelect, findFirstMatch) {
     }
     const firstMatch = findFirstMatch(typedValue)
     if (firstMatch) {
-      event.defaultMuiPrevented = true
+      // `defaultMuiPrevented` is a MUI-specific extension to KeyboardEvent
+      // (not part of the standard DOM/React types) that tells MUI's
+      // Autocomplete to skip its own Enter-key handling.
+      ;/** @type {any} */ (event).defaultMuiPrevented = true
       onSelect(firstMatch)
     }
   }
