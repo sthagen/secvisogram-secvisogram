@@ -112,6 +112,13 @@ function CwecId({
   const [inputValue, setInputValue] = React.useState(
     /** @type {string} */ (value),
   )
+  // Keeps the displayed text in sync whenever the underlying value changes
+  // from the outside (e.g. undo/redo, loading a different document).
+  const [prevValue, setPrevValue] = React.useState(value)
+  if (value !== prevValue) {
+    setPrevValue(value)
+    setInputValue(/** @type {string} */ (value))
+  }
 
   const handleChange = (
     /** @type {React.SyntheticEvent<Element, Event>} */ _event,
@@ -161,11 +168,6 @@ function CwecId({
     return `${id}, ${name}`
   }
 
-  React.useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setInputValue(/** @type {string} */ (value))
-  }, [value])
-
   return (
     <Attribute
       label={label}
@@ -185,8 +187,8 @@ function CwecId({
             freeSolo
             forcePopupIcon={false}
             options={cwec.weaknesses.map((cwe) => cwe.id)}
-            renderOption={(props, option) => (
-              <li {...props} key={option}>
+            renderOption={({ key: _key, ...props }, option) => (
+              <li key={option} {...props}>
                 {displayIdAndName(option)}
               </li>
             )}
@@ -240,6 +242,13 @@ function CwecName({
   const [inputValue, setInputValue] = React.useState(
     /** @type {string} */ (value),
   )
+  // Keeps the displayed text in sync whenever the underlying value changes
+  // from the outside (e.g. undo/redo, loading a different document).
+  const [prevValue, setPrevValue] = React.useState(value)
+  if (value !== prevValue) {
+    setPrevValue(value)
+    setInputValue(/** @type {string} */ (value))
+  }
 
   const handleChange = (
     /** @type {React.SyntheticEvent<Element, Event>} */ _event,
@@ -289,11 +298,6 @@ function CwecName({
     return `${id}, ${name}`
   }
 
-  React.useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setInputValue(/** @type string */ (value))
-  }, [value])
-
   return (
     <Attribute
       label={label}
@@ -313,8 +317,8 @@ function CwecName({
             freeSolo
             forcePopupIcon={false}
             options={cwec.weaknesses.map((cwe) => cwe.name)}
-            renderOption={(props, option) => (
-              <li {...props} key={option}>
+            renderOption={({ key: _key, ...props }, option) => (
+              <li key={option} {...props}>
                 {displayIdAndName(option)}
               </li>
             )}

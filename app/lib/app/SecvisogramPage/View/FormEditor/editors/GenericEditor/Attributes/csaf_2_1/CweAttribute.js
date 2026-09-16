@@ -55,6 +55,13 @@ export default function CweAttribute({ property, instancePath, disabled }) {
   const [namePath, nameValue] = getChildPathAndValue(instancePath, doc, 'name')
 
   const [versionTerm, setVersionTerm] = useState('')
+  // Keeps the term in sync whenever the underlying value changes from the
+  // outside (e.g. undo/redo, loading a different document).
+  const [prevVersionValue, setPrevVersionValue] = useState(versionValue)
+  if (versionValue !== prevVersionValue) {
+    setPrevVersionValue(versionValue)
+    setVersionTerm(String(versionValue))
+  }
 
   const [cwec, setCwec] = useState(/** @type {Cwec | null} */ (null))
 
@@ -62,11 +69,6 @@ export default function CweAttribute({ property, instancePath, disabled }) {
     () => versionTerm || Array.from(cwecMap.keys().take(1)).at(0),
     [versionTerm],
   )
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setVersionTerm(String(versionValue))
-  }, [versionValue])
 
   useEffect(() => {
     let isUnmounted = false
@@ -191,13 +193,17 @@ function CwecVersion({
     onChange(id)
   }
 
-  React.useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+  // Keeps the displayed text (and dropdown search term) in sync whenever the
+  // underlying value changes from the outside (e.g. undo/redo, loading a
+  // different document).
+  const [prevValue, setPrevValue] = React.useState(value)
+  if (value !== prevValue) {
+    setPrevValue(value)
     setInputValue(/** @type string */ (value))
     if (value !== term) {
       setTerm('')
     }
-  }, [value, term])
+  }
 
   return (
     <Attribute
@@ -218,8 +224,8 @@ function CwecVersion({
             freeSolo
             forcePopupIcon={false}
             options={results ?? []}
-            renderOption={(props, option) => (
-              <li {...props} key={option}>
+            renderOption={({ key: _key, ...props }, option) => (
+              <li key={option} {...props}>
                 {option}
               </li>
             )}
@@ -312,11 +318,15 @@ function CwecId({
     onChange({ id: id, name: name })
   }
 
-  React.useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+  // Keeps the displayed text (and dropdown search term) in sync whenever the
+  // underlying value changes from the outside (e.g. undo/redo, loading a
+  // different document).
+  const [prevValue, setPrevValue] = React.useState(value)
+  if (value !== prevValue) {
+    setPrevValue(value)
     setInputValue(/** @type {string} */ (value))
     setTerm('')
-  }, [value])
+  }
 
   return (
     <Attribute
@@ -337,8 +347,8 @@ function CwecId({
             freeSolo
             forcePopupIcon={false}
             options={results?.map((cwe) => cwe.id) ?? []}
-            renderOption={(props, option) => (
-              <li {...props} key={option}>
+            renderOption={({ key: _key, ...props }, option) => (
+              <li key={option} {...props}>
                 {displayIdAndName(option)}
               </li>
             )}
@@ -409,11 +419,15 @@ function CwecName({
     onChange({ id: id, name: name })
   }
 
-  React.useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+  // Keeps the displayed text (and dropdown search term) in sync whenever the
+  // underlying value changes from the outside (e.g. undo/redo, loading a
+  // different document).
+  const [prevValue, setPrevValue] = React.useState(value)
+  if (value !== prevValue) {
+    setPrevValue(value)
     setInputValue(/** @type string */ (value))
     setTerm('')
-  }, [value])
+  }
 
   const displayIdAndName = (/** @type {string} */ name) => {
     if (!name) return ''
@@ -439,8 +453,8 @@ function CwecName({
             autoHighlight
             forcePopupIcon={false}
             options={results?.map((cwe) => cwe.name) ?? []}
-            renderOption={(props, option) => (
-              <li {...props} key={option}>
+            renderOption={({ key: _key, ...props }, option) => (
+              <li key={option} {...props}>
                 {displayIdAndName(option)}
               </li>
             )}
